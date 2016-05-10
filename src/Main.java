@@ -19,12 +19,13 @@ public class Main extends Application {
 
     MainLoop mainLoop = new MainLoop();
     static Canvas canvas;
-
+    //use javafx scene builder here 
+    //http://stackoverflow.com/questions/23576044/how-to-center-a-node-within-a-pane-javafx
     public VBox createControlPan() {
         VBox panel = new VBox(10);
         panel.setPadding(new Insets(10));
         Button start = new Button("Start");
-        panel.setAlignment(Pos.CENTER);
+        panel.setAlignment(Pos.CENTER_LEFT);
         panel.getChildren().addAll(start);
 
         return panel;

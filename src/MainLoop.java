@@ -13,7 +13,7 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void handle(long currentNanoTime)
     {
-        currentTime += currentNanoTime / 10e9;
+        currentTime += currentNanoTime / 1e9;
 
         if( Math.floor(currentTime) > lastSecond) {
 
@@ -31,4 +31,6 @@ public class MainLoop extends AnimationTimer {
         for(int i = 0; i < cars.size(); i++);
         //gc.drawImage(image, cars.get(i).getX(), cars.get(i).getY());
     }
+
+
 }

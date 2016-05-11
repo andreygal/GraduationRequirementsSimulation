@@ -6,7 +6,12 @@ import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
     ArrayList<Car> cars = new ArrayList<>();
-
+    final private double CENTER_WIDTH  = 50;
+    final private double CENTER_HEIGHT = 50;
+    
+    private double canvasCenterX = Main.canvas.getWidth()/2.0;
+    private double canvasCenterY = Main.canvas.getHeight()/2.0;
+    
     double currentTime = 0.0;
     long lastSecond = 0;
 
@@ -25,7 +30,11 @@ public class MainLoop extends AnimationTimer {
         GraphicsContext gc = Main.canvas.getGraphicsContext2D();
 
         gc.setFill(Color.BLACK);
-        gc.fillOval(225, 225, 50, 50);
+        gc.fillOval(225, 225, CENTER_WIDTH, CENTER_HEIGHT);
+        //https://jaxenter.com/tutorial-a-glimpse-at-javafxs-canvas-api-105696.html
+        for (int i = 1; i <= Main.numOfCars) {
+            
+        }
         gc.strokeOval(150, 150, 200, 200);
 
         for(int i = 0; i < cars.size(); i++);

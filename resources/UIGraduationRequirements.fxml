@@ -31,23 +31,23 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Slider translateY="-50.0" />
+      <Slider id="IntersectionSlider" translateY="-50.0" />
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Intersection Slider" translateY="-75.0">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Start" translateY="-90.0">
+      <Button id="StartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Start" translateY="-90.0">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Stop" translateY="-90.0">
+      <Button id="StopBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Stop" translateY="-90.0">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Quit" translateY="-90.0">
+      <Button id="QuitBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Quit" translateY="-90.0">
          <font>
             <Font size="18.0" />
          </font>

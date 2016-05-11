@@ -1,7 +1,9 @@
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -32,7 +34,7 @@ public class Main extends Application {
         start.setOnAction((event) -> {
             mainLoop.start();
         });
-        
+
         stop.setOnAction((event) -> {
             mainLoop.stop();
         });
@@ -49,12 +51,13 @@ public class Main extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
+        //Add UI Control Panel
+        Parent UIPanel = FXMLLoader.load(getClass().getResource("UIGraduationRequirements.fxml"));
 
         primaryStage.setTitle("Graduation Requirements Simulator");
         BorderPane root = new BorderPane();
         root.setLeft(canvas);
-        root.setRight(createControlPan());
+        root.setRight(UIPanel);
         Scene scene = new Scene(root, 700, 500, Color.BLUE);
         primaryStage.setScene(scene);
 

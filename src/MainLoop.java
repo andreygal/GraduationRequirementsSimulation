@@ -32,6 +32,9 @@ public class MainLoop extends AnimationTimer {
         gc.setFill(Color.BLACK);
         gc.fillOval(225, 225, CENTER_WIDTH, CENTER_HEIGHT);
         //https://jaxenter.com/tutorial-a-glimpse-at-javafxs-canvas-api-105696.html
+        //https://www.w3.org/TR/SVG/paths.html
+        //http://www.hameister.org/JavaFX_Dartboard.html
+        //use paths to draw the circles, then fill them with gradients
         for (int i = 1; i <= Main.numOfCars) {
             
         }

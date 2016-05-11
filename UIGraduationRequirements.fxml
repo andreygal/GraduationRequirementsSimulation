@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="200.0" spacing="40.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="#5667a4" stroke="#1295b5" strokeType="OUTSIDE" strokeWidth="0.0" text="Graduation Requirements Simulation" textAlignment="CENTER" wrappingWidth="200.5029296875">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <effect>
+            <Reflection />
+         </effect>
+      </Text>
+      <Separator prefWidth="200.0" translateY="-40.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Separator>
+      <Slider id="CarSlider" fx:id="CarSlider" blendMode="DARKEN" depthTest="DISABLE" max="10.0" prefHeight="16.0" prefWidth="147.0" translateY="5.0" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Car Slider" textAlignment="CENTER" translateY="-25.0" wrappingWidth="80.7294921875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Slider translateY="-50.0" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Intersection Slider" translateY="-75.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Start" translateY="-90.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Stop" translateY="-90.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="33.0" prefWidth="85.0" text="Quit" translateY="-90.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</VBox>

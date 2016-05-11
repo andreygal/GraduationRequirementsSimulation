@@ -35,9 +35,9 @@ public class MainLoop extends AnimationTimer {
         //https://www.w3.org/TR/SVG/paths.html
         //http://www.hameister.org/JavaFX_Dartboard.html
         //use paths to draw the circles, then fill them with gradients
-        for (int i = 1; i <= Main.numOfCars) {
-            
-        }
+//        for (int i = 1; i <= Main.numOfCars) {
+//
+//        }
         gc.strokeOval(150, 150, 200, 200);
 
         for(int i = 0; i < cars.size(); i++);

@@ -17,9 +17,9 @@ public class Main extends Application {
     static int numOfCars;
     static int numOfIntersections;
 
-    MainLoop mainLoop = new MainLoop();
     static Canvas canvas;
-    //use javafx scene builder here 
+    MainLoop mainLoop;
+    //use javafx scene builder here
     //http://stackoverflow.com/questions/23576044/how-to-center-a-node-within-a-pane-javafx
     public VBox createControlPan() {
         VBox panel = new VBox(10);
@@ -45,7 +45,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception
     {
         canvas = new Canvas(500, 500);
-
+        mainLoop = new MainLoop();
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());

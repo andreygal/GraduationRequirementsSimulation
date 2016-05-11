@@ -1,17 +1,16 @@
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class Main extends Application {
@@ -20,28 +19,7 @@ public class Main extends Application {
     static int numOfIntersections;
 
     static Canvas canvas;
-    MainLoop mainLoop;
-    //use javafx scene builder here
-    //http://stackoverflow.com/questions/23576044/how-to-center-a-node-within-a-pane-javafx
-    public VBox createControlPan() {
-        VBox panel = new VBox(10);
-        panel.setPadding(new Insets(10));
-        Button start = new Button("Start");
-        Button stop  = new Button("Stop");
-        panel.setAlignment(Pos.CENTER_LEFT);
-        panel.getChildren().addAll(start);
-       
-        start.setOnAction((event) -> {
-            mainLoop.start();
-        });
-
-        stop.setOnAction((event) -> {
-            mainLoop.stop();
-        });
-        
-        
-        return panel;
-    }
+    static MainLoop mainLoop;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -53,6 +31,7 @@ public class Main extends Application {
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         //Add UI Control Panel
         Parent UIPanel = FXMLLoader.load(getClass().getResource("UIGraduationRequirements.fxml"));
+
 
         primaryStage.setTitle("Graduation Requirements Simulator");
         BorderPane root = new BorderPane();

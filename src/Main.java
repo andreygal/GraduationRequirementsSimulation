@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     static double velocity;
-    static int numberOfCars;
+    static int numOfCars;
     static int numOfIntersections;
 
     MainLoop mainLoop = new MainLoop();
@@ -25,9 +25,19 @@ public class Main extends Application {
         VBox panel = new VBox(10);
         panel.setPadding(new Insets(10));
         Button start = new Button("Start");
+        Button stop  = new Button("Stop");
         panel.setAlignment(Pos.CENTER_LEFT);
         panel.getChildren().addAll(start);
-
+       
+        start.setOnAction((event) -> {
+            mainLoop.start();
+        });
+        
+        stop.setOnAction((event) -> {
+            mainLoop.stop();
+        });
+        
+        
         return panel;
     }
 
@@ -48,12 +58,10 @@ public class Main extends Application {
         Scene scene = new Scene(root, 700, 500, Color.BLUE);
         primaryStage.setScene(scene);
 
-
-        //add as a listener to a Start button
-        mainLoop.start();
-
         primaryStage.show();
     }
+    
+    
 
     public static void main(String[] args) {
         launch(args);

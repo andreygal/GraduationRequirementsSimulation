@@ -15,24 +15,25 @@ import java.util.ResourceBundle;
 
 public class Main extends Application {
     static double velocity;
-    static int numOfCars;
-    static int numOfIntersections;
+    static int numOfCars = 1;
+    static int numOfIntersections = 1;
 
     static Canvas canvas;
     static MainLoop mainLoop;
 
     @Override
     public void start(Stage primaryStage) throws Exception
-    {
-        canvas = new Canvas(500, 500);
+    {   //Main animation loop
         mainLoop = new MainLoop();
+        //set up left side
+        canvas = new Canvas(500, 500);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        //Add UI Control Panel
+
+        //Add UI Control Panel (right side)
         Parent UIPanel = FXMLLoader.load(getClass().getResource("UIGraduationRequirements.fxml"));
-
-
+        //JavaFX setup
         primaryStage.setTitle("Graduation Requirements Simulator");
         BorderPane root = new BorderPane();
         root.setLeft(canvas);

@@ -32,13 +32,13 @@ public class Car implements Runnable {
         return new Rectangle2D(positionX, positionY, carImage.getWidth(), carImage.getHeight());
     }
 
-    public boolean intersercts(Car anotherCar) {
+    public boolean intersects(Car anotherCar) {
         return anotherCar.getBoundary().intersects(this.getBoundary());
     }
 
     @Override
     public void run() {
-
+        this.update(System.nanoTime());
 
     }
 }

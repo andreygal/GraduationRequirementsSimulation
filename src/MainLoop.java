@@ -1,7 +1,10 @@
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
@@ -15,19 +18,22 @@ public class MainLoop extends AnimationTimer {
     double currentTime = 0.0;
     long lastSecond = 0;
 
-    @Override
-    public void handle(long currentNanoTime)
-    {
-        currentTime += currentNanoTime / 1e9;
 
+    @Override
+    public void handle(long currentNanoTime) {
+        Image carImage = new Image(getClass().getResourceAsStream("car.png"));
+        GraphicsContext gc = Main.canvas.getGraphicsContext2D();
+        currentTime += currentNanoTime / 1e9;
+        cars.add(new Car (carImage, canvasCenterX + 50.0, canvasCenterY));
         if( Math.floor(currentTime) > lastSecond) {
 
-            //do the logic
+            for (Car car : cars) {
+                car.render(gc);
+            }
 
             lastSecond++;
         }
 
-        GraphicsContext gc = Main.canvas.getGraphicsContext2D();
 
         gc.setFill(Color.BLACK);
         gc.fillOval(225, 225, CENTER_WIDTH, CENTER_HEIGHT);

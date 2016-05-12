@@ -4,9 +4,8 @@ import javafx.scene.image.Image;
 
 public class Car implements Runnable {
 
-    //velocity in rads/s
-    Thread carThread;
-    static double  velocity;
+    //angular velocity in rads/s
+    static double  angularVelocity;
     static double  centerX;
     static double  centerY;
     static double  imageWidth;
@@ -15,8 +14,16 @@ public class Car implements Runnable {
     private String carName;
     private double positionX;
     private double positionY;
-    private double radius = 100;
+    private double radius = 100.0;
+    //update arc is the subtended arc after which update is called.
+    //we want to update the image every 2 pixels
+    private double updateArc      =  2.0 / radius;
+    //interval is in seconds
+    private double updateInterval = (updateArc/Main.arcAngle);
+    private long updateIntervalMilli = (long)(updateInterval * 1000.0);
+
     boolean moving;
+    Thread carThread;
 
     public Car(Image carImage, double centerX, double centerY, String carName) {
         this.carImage = carImage;
@@ -25,7 +32,7 @@ public class Car implements Runnable {
         this.centerY = centerY;
         this.imageWidth = carImage.getWidth();
         this.imageHeight = carImage.getHeight();
-        this.velocity = Main.velocity;
+        this.angularVelocity = (2 * Math.PI) / ((double) Main.numOfIntersections);
         carThread = new Thread(this, carName);
     }
     public void startCar() {
@@ -34,8 +41,8 @@ public class Car implements Runnable {
     }
     public void update(double time) {
 
-        positionX = centerX + radius * Math.cos(time/(2*Math.PI));
-        positionY = centerY + radius * Math.sin(time/(2*Math.PI));
+        positionX = centerX + radius * Math.cos(time * angularVelocity);
+        positionY = centerY + radius * Math.sin(time * angularVelocity);
     }
 
     public void stopCar() {
@@ -58,9 +65,16 @@ public class Car implements Runnable {
     @Override
     public void run() {
         moving = true;
-
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0;
         while(moving) {
-            update(MainLoop.lastSecond);
+            if (elapsedTime >= updateIntervalMilli) {
+                update(MainLoop.globalTime);
+                elapsedTime = 0;
+                startTime = System.currentTimeMillis();
+            }
+
+            elapsedTime = System.currentTimeMillis() - startTime;
             //System.out.println("Inside car run: updating car position");
             //System.out.println("Position " + positionX + ", " + positionY);
         }

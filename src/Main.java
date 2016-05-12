@@ -12,9 +12,9 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    static double velocity = 1;
     static int numOfCars = 1;
     static int numOfIntersections = 1;
+    static double arcAngle = 2 * Math.PI / (double) numOfIntersections;
 
     static Canvas canvas;
     static MainLoop mainLoop;

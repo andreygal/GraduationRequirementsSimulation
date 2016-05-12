@@ -8,8 +8,8 @@ public class Car implements Runnable {
     //velocity in rads/s
     Thread carThread;
     static double  velocity;
-    static double  centerX = 250;
-    static double  centerY = 250;
+    static double  centerX;
+    static double  centerY;
     static Image   carImage;
     private String carName;
     private double positionX;
@@ -21,7 +21,7 @@ public class Car implements Runnable {
         this.carImage = carImage;
         this.carName = carName;
         this.centerX = centerX;
-        this.positionY = centerY;
+        this.centerY = centerY;
         this.velocity = Main.velocity;
         carThread = new Thread(this, carName);
     }

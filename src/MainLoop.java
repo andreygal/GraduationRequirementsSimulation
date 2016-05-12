@@ -25,7 +25,7 @@ public class MainLoop extends AnimationTimer {
 
     @Override
     public void start() {
-        cars.add(new Car (carImage, canvasCenterX, canvasCenterY, "Car 1"));
+        cars.add(new Car (carImage, canvasCenterX - 12, canvasCenterY - 12, "Car 1"));
         for (Car car : cars)
             car.startCar();
         System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);

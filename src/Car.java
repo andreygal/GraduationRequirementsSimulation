@@ -1,7 +1,6 @@
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class Car implements Runnable {
 
@@ -10,11 +9,13 @@ public class Car implements Runnable {
     static double  velocity;
     static double  centerX;
     static double  centerY;
+    static double  imageWidth;
+    static double  imageHeight;
     static Image   carImage;
     private String carName;
     private double positionX;
     private double positionY;
-    private double radius = 120;
+    private double radius = 100;
     boolean moving;
 
     public Car(Image carImage, double centerX, double centerY, String carName) {
@@ -22,6 +23,8 @@ public class Car implements Runnable {
         this.carName = carName;
         this.centerX = centerX;
         this.centerY = centerY;
+        this.imageWidth = carImage.getWidth();
+        this.imageHeight = carImage.getHeight();
         this.velocity = Main.velocity;
         carThread = new Thread(this, carName);
     }
@@ -30,6 +33,7 @@ public class Car implements Runnable {
         carThread.start();
     }
     public void update(double time) {
+
         positionX = centerX + radius * Math.cos(time/(2*Math.PI));
         positionY = centerY + radius * Math.sin(time/(2*Math.PI));
     }

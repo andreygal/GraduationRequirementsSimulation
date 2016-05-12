@@ -37,7 +37,7 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void handle(long currentNanoTime) {
         //currentTime += currentNanoTime / 1e9;
-        startTime = System.currentTimeMillis();
+        startTime = currentNanoTime/1000000;
         System.out.println(currentTime + " " + globalTime);
         //background clears the canvas
         gc.setFill(Color.GREEN);
@@ -59,14 +59,14 @@ public class MainLoop extends AnimationTimer {
         elapsedTime = (System.currentTimeMillis() - startTime);
         globalTime += (elapsedTime / 1000.0);
         //if less than 16ms passed sleep for the difference
-        //if (elapsedTime < 16l) {
+        if (elapsedTime < 16l) {
             System.out.println("Handle sleeping");
             try {
                 Thread.sleep(16l);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        //}
+        }
 
 
     }

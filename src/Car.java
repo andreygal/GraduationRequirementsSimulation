@@ -5,19 +5,27 @@ import javafx.scene.image.Image;
 public class Car implements Runnable {
 
     //velocity in rads/s
+    Thread carThread;
     static double  velocity;
-    static double  centerX;
-    static double  centerY;
+    static double  centerX = 250;
+    static double  centerY = 250;
     static Image   carImage;
+    private String carName;
     private double positionX;
     private double positionY;
-    private double radius;
+    private double radius = 120;
 
-    public Car(Image carImage, double positionX, double positionY) {
+    public Car(Image carImage, double centerX, double centerY, String carName) {
         this.carImage = carImage;
-        this.positionX = positionX;
-        this.positionY = positionY;
-
+        this.carName = carName;
+        this.centerX = centerX;
+        this.positionY = centerY;
+        this.velocity = Main.velocity;
+        carThread = new Thread(this, carName);
+    }
+    public void startCar() {
+        System.out.println("Starting car thread");
+        carThread.start();
     }
     public void update(double time) {
         positionX = centerX + radius * Math.cos(velocity * time);
@@ -38,7 +46,16 @@ public class Car implements Runnable {
 
     @Override
     public void run() {
-        this.update(System.nanoTime());
+        while(true) {
+            update(MainLoop.lastSecond);
+            System.out.println("Inside car run: updating car position");
+            System.out.println("Position " + positionX + ", " + positionY);
+            try {
+             Thread.sleep(500);
+            } catch (InterruptedException e) {
+            e.printStackTrace();
+            }
+        }
 
     }
 }

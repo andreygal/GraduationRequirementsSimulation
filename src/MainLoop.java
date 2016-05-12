@@ -2,31 +2,42 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
     ArrayList<Car> cars = new ArrayList<>();
+    Image carImage;
+    GraphicsContext gc;
+
     final private double CENTER_WIDTH  = 50;
     final private double CENTER_HEIGHT = 50;
     
     private double canvasCenterX = Main.canvas.getWidth()/2.0;
     private double canvasCenterY = Main.canvas.getHeight()/2.0;
     
-    double currentTime = 0.0;
-    long lastSecond = 0;
+    static double currentTime = 0.0;
+    static long lastSecond = 0;
 
+    public MainLoop() {
+        carImage = new Image(getClass().getResourceAsStream("car.png"));
+        gc = Main.canvas.getGraphicsContext2D();
+    }
+
+    @Override
+    public void start() {
+        cars.add(new Car (carImage, 250.0, 250.0, "Car 1"));
+        for (Car car : cars)
+            car.startCar();
+
+        super.start();
+    }
 
     @Override
     public void handle(long currentNanoTime) {
-        Image carImage = new Image(getClass().getResourceAsStream("car.png"));
-        GraphicsContext gc = Main.canvas.getGraphicsContext2D();
         currentTime += currentNanoTime / 1e9;
-        cars.add(new Car (carImage, canvasCenterX + 50.0, canvasCenterY));
+        System.out.println(currentTime + " " + lastSecond);
         if( Math.floor(currentTime) > lastSecond) {
-
+            System.out.println("Inside handle: rendering cars");
             for (Car car : cars) {
                 car.render(gc);
             }
@@ -46,8 +57,13 @@ public class MainLoop extends AnimationTimer {
 //        }
         gc.strokeOval(150, 150, 200, 200);
 
-        for(int i = 0; i < cars.size(); i++);
+        //for(int i = 0; i < cars.size(); i++);
         //gc.drawImage(image, cars.get(i).getX(), cars.get(i).getY());
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -31,7 +31,7 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Slider id="IntersectionSlider" fx:id="IntersectSlider" blockIncrement="1.0" layoutY="80.0" majorTickUnit="1.0" max="10.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="1" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
+      <Slider id="IntersectionSlider" fx:id="IntersectSlider" blockIncrement="1.0" layoutY="80.0" majorTickUnit="1.0" max="10.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
       <Label id="IntersectLabel" fx:id="IntersectLabel" ellipsisString="Number of intersections: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="...">
          <font>
             <Font size="14.0" />

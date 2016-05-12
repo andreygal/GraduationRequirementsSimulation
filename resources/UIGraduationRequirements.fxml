@@ -26,15 +26,15 @@
          </effect>
       </Separator>
       <Slider id="CarSlider" fx:id="CarSlider" blendMode="DARKEN" blockIncrement="1.0" depthTest="DISABLE" majorTickUnit="1.0" max="10.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" translateY="15.0" value="1.0" />
-      <Label id="CarLabel" fx:id="CarLabel" ellipsisString="Number of cars: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="...">
+      <Label id="CarLabel" fx:id="CarLabel" ellipsisString="Number of cars: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="Number of cars: ">
          <font>
-            <Font size="14.0" />
+            <Font size="13.0" />
          </font>
       </Label>
       <Slider id="IntersectionSlider" fx:id="IntersectSlider" blockIncrement="1.0" layoutY="80.0" majorTickUnit="1.0" max="10.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
-      <Label id="IntersectLabel" fx:id="IntersectLabel" ellipsisString="Number of intersections: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="...">
+      <Label id="IntersectLabel" fx:id="IntersectLabel" ellipsisString="Number of intersections: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="Number of Intersections:">
          <font>
-            <Font size="14.0" />
+            <Font size="13.0" />
          </font>
       </Label>
       <Button id="StartBtn" fx:id="StartBtn" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="85.0" text="Start">

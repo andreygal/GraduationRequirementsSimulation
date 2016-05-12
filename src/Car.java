@@ -68,13 +68,13 @@ public class Car implements Runnable {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0;
         while(moving) {
-            if (elapsedTime >= updateIntervalMilli) {
+            //if (elapsedTime >= updateIntervalMilli) {
                 update(MainLoop.globalTime);
-                elapsedTime = 0;
-                startTime = System.currentTimeMillis();
-            }
+                //elapsedTime = 0;
+                //startTime = System.currentTimeMillis();
+            //}
 
-            elapsedTime = System.currentTimeMillis() - startTime;
+            //elapsedTime = System.currentTimeMillis() - startTime;
             //System.out.println("Inside car run: updating car position");
             //System.out.println("Position " + positionX + ", " + positionY);
         }

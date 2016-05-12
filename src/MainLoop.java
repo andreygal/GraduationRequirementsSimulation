@@ -34,10 +34,12 @@ public class MainLoop extends AnimationTimer {
 
     @Override
     public void handle(long currentNanoTime) {
+        System.out.println(prevTime + " " + globalTime);
         //background clears the canvas
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
 
+        System.out.println("Inside handle: rendering cars");
         //draw the traffic circle, lanes and intersections
         gc.setFill(Color.BLACK);
         gc.fillOval(canvasCenterX - CENTER_WIDTH/2,
@@ -47,8 +49,13 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars) {
             car.render(gc);
         }
-        //lastSecond++;
-        globalTime += 0.0167;
+            //lastSecond++;
+        if(prevTime == 0)
+           globalTime = 0.0167;
+        else {
+            globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
+            prevTime = currentNanoTime;
+        }
 
 
     }

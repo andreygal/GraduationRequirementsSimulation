@@ -9,8 +9,8 @@ public class MainLoop extends AnimationTimer {
     Image carImage;
     GraphicsContext gc;
 
-    final private double CENTER_WIDTH  = 50;
-    final private double CENTER_HEIGHT = 50;
+    final private double CENTER_WIDTH  = 30;
+    final private double CENTER_HEIGHT = 30;
     
     private double canvasCenterX = Main.canvas.getWidth()/2.0;
     private double canvasCenterY = Main.canvas.getHeight()/2.0;
@@ -25,10 +25,10 @@ public class MainLoop extends AnimationTimer {
 
     @Override
     public void start() {
-        cars.add(new Car (carImage, 250.0, 250.0, "Car 1"));
+        cars.add(new Car (carImage, canvasCenterX, canvasCenterY, "Car 1"));
         for (Car car : cars)
             car.startCar();
-
+        System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);
         super.start();
     }
 
@@ -36,34 +36,31 @@ public class MainLoop extends AnimationTimer {
     public void handle(long currentNanoTime) {
         currentTime += currentNanoTime / 1e9;
         System.out.println(currentTime + " " + lastSecond);
+        //background clears the canvas
+        gc.setFill(Color.GREEN);
+        gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
+        //Render the canvas
         if( Math.floor(currentTime) > lastSecond) {
             System.out.println("Inside handle: rendering cars");
+            //draw the traffic circle, lanes and intersections
+            gc.setFill(Color.BLACK);
+            gc.fillOval(canvasCenterX - CENTER_WIDTH/2,
+                        canvasCenterY - CENTER_HEIGHT/2, CENTER_WIDTH, CENTER_HEIGHT);
+            gc.strokeOval(canvasCenterX - 100, canvasCenterY - 100, 200, 200);
+            //draw the cars
             for (Car car : cars) {
                 car.render(gc);
             }
-
             lastSecond++;
         }
+    }
 
-
-        gc.setFill(Color.BLACK);
-        gc.fillOval(225, 225, CENTER_WIDTH, CENTER_HEIGHT);
-        //https://jaxenter.com/tutorial-a-glimpse-at-javafxs-canvas-api-105696.html
-        //https://www.w3.org/TR/SVG/paths.html
-        //http://www.hameister.org/JavaFX_Dartboard.html
-        //use paths to draw the circles, then fill them with gradients
-//        for (int i = 1; i <= Main.numOfCars) {
-//
-//        }
-        gc.strokeOval(150, 150, 200, 200);
-
-        //for(int i = 0; i < cars.size(); i++);
-        //gc.drawImage(image, cars.get(i).getX(), cars.get(i).getY());
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    @Override
+    public void stop() {
+        for (Car car : cars) {
+            car.stopCar();
         }
+        super.stop();
     }
 
 

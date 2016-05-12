@@ -1,6 +1,7 @@
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Car implements Runnable {
 
@@ -14,6 +15,7 @@ public class Car implements Runnable {
     private double positionX;
     private double positionY;
     private double radius = 120;
+    boolean moving;
 
     public Car(Image carImage, double centerX, double centerY, String carName) {
         this.carImage = carImage;
@@ -28,12 +30,17 @@ public class Car implements Runnable {
         carThread.start();
     }
     public void update(double time) {
-        positionX = centerX + radius * Math.cos(velocity * time);
-        positionY = centerY + radius * Math.sin(velocity * time);
+        positionX = centerX + radius * Math.cos(time/(2*Math.PI));
+        positionY = centerY + radius * Math.sin(time/(2*Math.PI));
+    }
+
+    public void stopCar() {
+        moving = false;
     }
 
     public void render(GraphicsContext gc) {
         gc.drawImage(carImage, positionX, positionY);
+
     }
 
     public Rectangle2D getBoundary() {
@@ -46,15 +53,12 @@ public class Car implements Runnable {
 
     @Override
     public void run() {
-        while(true) {
+        moving = true;
+
+        while(moving) {
             update(MainLoop.lastSecond);
-            System.out.println("Inside car run: updating car position");
-            System.out.println("Position " + positionX + ", " + positionY);
-            try {
-             Thread.sleep(500);
-            } catch (InterruptedException e) {
-            e.printStackTrace();
-            }
+            //System.out.println("Inside car run: updating car position");
+            //System.out.println("Position " + positionX + ", " + positionY);
         }
 
     }

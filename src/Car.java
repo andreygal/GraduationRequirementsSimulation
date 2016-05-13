@@ -14,7 +14,7 @@ public class Car implements Runnable {
     private String carName;
     private double positionX;
     private double positionY;
-    private double radius = 50.0;
+    private double radius = 100.0;
     //update arc is the subtended arc after which update is called.
     //we want to update the image every 2 pixels
     private double updateArc      =  2.0 / radius;

@@ -25,6 +25,8 @@ public class ControlPanel implements Initializable {
     private Slider IntersectSlider;
     @FXML
     private Label IntersectLabel;
+    @FXML
+    private Label TimeLabel;
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -57,6 +59,8 @@ public class ControlPanel implements Initializable {
         StopBtn.setOnAction( ae -> Main.mainLoop.stop());
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
         QuitBtn.setOnAction( ae -> Platform.exit());
+        assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
+        TimeLabel.setText(String.valueOf(MainLoop.globalTime));
 
     }
 }

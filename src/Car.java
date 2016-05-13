@@ -33,7 +33,8 @@ public class Car implements Runnable {
         this.imageWidth = carImage.getWidth();
         this.imageHeight = carImage.getHeight();
         this.radius = radius;
-        this.angularVelocity = (2 * Math.PI) / ((double) Main.numOfIntersections);
+        //cars move counter-clockwise
+        this.angularVelocity = -( (2 * Math.PI) / ((double) Main.numOfIntersections));
         carThread = new Thread(this, carName);
     }
     public void startCar() {
@@ -50,6 +51,11 @@ public class Car implements Runnable {
     public void stopCar() {
         moving = false;
     }
+
+    public void enterIntersection() {}
+
+    public void exitIntersection() {}
+
 
     public void render(GraphicsContext gc) {
         gc.drawImage(carImage, positionX, positionY);

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControlPanel">
+<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="200.0" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControlPanel">
    <children>
       <Text fill="#5667a4" stroke="#1295b5" strokeType="OUTSIDE" strokeWidth="0.0" text="Graduation Requirements Simulation" textAlignment="CENTER" wrappingWidth="200.5029296875">
          <font>
@@ -25,7 +25,7 @@
             <DropShadow />
          </effect>
       </Separator>
-      <Slider id="CarSlider" fx:id="CarSlider" blendMode="DARKEN" blockIncrement="1.0" depthTest="DISABLE" majorTickUnit="1.0" max="10.0" maxHeight="-Infinity" maxWidth="-Infinity" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" translateY="15.0" value="1.0" />
+      <Slider id="CarSlider" fx:id="CarSlider" blendMode="DARKEN" blockIncrement="1.0" depthTest="DISABLE" majorTickUnit="1.0" max="10.0" min="1.0" minHeight="-Infinity" minWidth="-Infinity" minorTickCount="0" prefHeight="38.0" prefWidth="180.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" translateY="15.0" value="1.0" />
       <Label id="CarLabel" fx:id="CarLabel" ellipsisString="Number of cars: ..." maxWidth="-Infinity" minWidth="-Infinity" prefWidth="160.0" text="Number of cars: ">
          <font>
             <Font size="13.0" />

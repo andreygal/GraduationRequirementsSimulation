@@ -2,7 +2,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 
@@ -68,6 +68,29 @@ public class MainLoop extends AnimationTimer {
                     canvasCenterY - trackRadiusOfCurv,
                     trackRadiusOfCurv * 2, trackRadiusOfCurv * 2);
         }
+
+        //Draw the intersections
+        gc.setFill(Color.BLACK);
+        double degree = 0;
+        double step = 360.0 / Main.numOfIntersections;
+        for (int i = 0; i < Main.numOfIntersections; i++) {
+            gc.save();
+            Rotate rectRotate = new Rotate(degree, canvasCenterX, canvasCenterX);
+            gc.setTransform(rectRotate.getMxx(),
+                            rectRotate.getMyx(),
+                            rectRotate.getMxy(),
+                            rectRotate.getMyy(),
+                            rectRotate.getTx(),
+                            rectRotate.getTy());
+            gc.fillRect(canvasCenterX - dashedMarkOffset / 2.0,
+                        canvasCenterY - outerBound - 40,
+                        dashedMarkOffset,
+                        outerBound + 40);
+            degree += step;
+            gc.restore();
+        }
+
+
 
 
         //draw the cars

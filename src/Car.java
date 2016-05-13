@@ -14,7 +14,7 @@ public class Car implements Runnable {
     private String carName;
     private double positionX;
     private double positionY;
-    private double radius = 100.0;
+    private double radius = 34;
     //update arc is the subtended arc after which update is called.
     //we want to update the image every 2 pixels
     private double updateArc      =  2.0 / radius;
@@ -25,13 +25,14 @@ public class Car implements Runnable {
     boolean moving;
     Thread carThread;
 
-    public Car(Image carImage, double centerX, double centerY, String carName) {
+    public Car(Image carImage, double centerX, double centerY, double radius, String carName) {
         this.carImage = carImage;
         this.carName = carName;
         this.centerX = centerX;
         this.centerY = centerY;
         this.imageWidth = carImage.getWidth();
         this.imageHeight = carImage.getHeight();
+        this.radius = radius;
         this.angularVelocity = (2 * Math.PI) / ((double) Main.numOfIntersections);
         carThread = new Thread(this, carName);
     }

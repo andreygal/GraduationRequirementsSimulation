@@ -15,6 +15,7 @@ public class Car implements Runnable {
     private double positionX;
     private double positionY;
     private double radius = 34;
+    private int startIntersection = 3;
     //update arc is the subtended arc after which update is called.
     //we want to update the image every 2 pixels
     private double updateArc      =  2.0 / radius;
@@ -33,6 +34,11 @@ public class Car implements Runnable {
         this.imageWidth = carImage.getWidth();
         this.imageHeight = carImage.getHeight();
         this.radius = radius;
+        this.positionX = centerX +
+                (MainLoop.outerBound + 20 ) * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
+        //System.out.println(MainLoop.intersectDegree.get(0));
+        this.positionY = centerY +
+                (MainLoop.outerBound + 20 ) * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
         //cars move counter-clockwise
         this.angularVelocity = -( (2 * Math.PI) / ((double) Main.numOfIntersections));
         carThread = new Thread(this, carName);
@@ -77,7 +83,7 @@ public class Car implements Runnable {
         long elapsedTime = 0;
         while(moving) {
             if (elapsedTime >= updateIntervalMilli) {
-                update(MainLoop.globalTime);
+                //update(MainLoop.globalTime);
                 elapsedTime = 0;
                 startTime = System.currentTimeMillis();
             }

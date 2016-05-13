@@ -12,19 +12,21 @@ public class MainLoop extends AnimationTimer {
     //Logic
     ArrayList<Car> cars;
     ArrayList<Double> intersectDegree;
+    static ArrayList<Double> intersectRads;
     //Graphics
     Image carImage;
     GraphicsContext gc;
 
-    final public double ISLAND_WIDTH  = 40;
-    final public double ISLAND_HEIGHT = 40;
-    final public double dashedMarkOffset = 28;
+    final static double ISLAND_WIDTH  = 40;
+    final static double ISLAND_HEIGHT = 40;
+    final static double dashedMarkOffset = 28;
 
     public double canvasCenterX = Main.canvas.getWidth() / 2.0;
     public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
     static double globalTime = 0.0;
+    static double outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 
@@ -32,6 +34,7 @@ public class MainLoop extends AnimationTimer {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
         cars = new ArrayList<>();
         intersectDegree = new ArrayList<>();
+        intersectRads = new ArrayList<>();
         gc = Main.canvas.getGraphicsContext2D();
     }
 
@@ -41,6 +44,7 @@ public class MainLoop extends AnimationTimer {
 
         for (int i = 0; i < Main.numOfIntersections; i++) {
             intersectDegree.add(90.0 + (360.0 / Main.numOfIntersections) * i);
+            intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
         cars.add(new Car (carImage, canvasCenterX - carImage.getWidth() / 2.0,
                                     canvasCenterY - carImage.getHeight() / 2.0,
@@ -62,7 +66,7 @@ public class MainLoop extends AnimationTimer {
 
         //Draw the asphalt
         gc.setFill(Color.BLACK);
-        double outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
+
         gc.fillOval(canvasCenterX - outerBound, canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 

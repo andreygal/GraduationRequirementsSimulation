@@ -4,6 +4,8 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
@@ -20,9 +22,11 @@ public class MainLoop extends AnimationTimer {
 
     static long   prevTime = 0;
     static double globalTime = 0.0;
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
+
         gc = Main.canvas.getGraphicsContext2D();
     }
 
@@ -52,6 +56,27 @@ public class MainLoop extends AnimationTimer {
         gc.fillOval(canvasCenterX - outerBound, canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 
+        //Draw the intersections
+        gc.setFill(Color.BLACK);
+        double degree = 0;
+        double step = 360.0 / Main.numOfIntersections;
+        for (int i = 0; i < Main.numOfIntersections; i++) {
+            gc.save();
+            Rotate rectRotate = new Rotate(degree, canvasCenterX, canvasCenterX);
+            gc.setTransform(rectRotate.getMxx(),
+                    rectRotate.getMyx(),
+                    rectRotate.getMxy(),
+                    rectRotate.getMyy(),
+                    rectRotate.getTx(),
+                    rectRotate.getTy());
+            gc.fillRect(canvasCenterX - dashedMarkOffset / 2.0,
+                    canvasCenterY - outerBound - 40,
+                    dashedMarkOffset,
+                    outerBound + 40);
+            degree += step;
+            gc.restore();
+        }
+
         //draw the traffic circle island
         gc.setFill(Color.GRAY);
         gc.fillOval(canvasCenterX - ISLAND_WIDTH/2,
@@ -69,41 +94,18 @@ public class MainLoop extends AnimationTimer {
                     trackRadiusOfCurv * 2, trackRadiusOfCurv * 2);
         }
 
-        //Draw the intersections
-        gc.setFill(Color.BLACK);
-        double degree = 0;
-        double step = 360.0 / Main.numOfIntersections;
-        for (int i = 0; i < Main.numOfIntersections; i++) {
-            gc.save();
-            Rotate rectRotate = new Rotate(degree, canvasCenterX, canvasCenterX);
-            gc.setTransform(rectRotate.getMxx(),
-                            rectRotate.getMyx(),
-                            rectRotate.getMxy(),
-                            rectRotate.getMyy(),
-                            rectRotate.getTx(),
-                            rectRotate.getTy());
-            gc.fillRect(canvasCenterX - dashedMarkOffset / 2.0,
-                        canvasCenterY - outerBound - 40,
-                        dashedMarkOffset,
-                        outerBound + 40);
-            degree += step;
-            gc.restore();
-        }
-
-
-
-
         //draw the cars
         for (Car car : cars) {
             car.render(gc);
         }
-            //lastSecond++;
+
         if (prevTime == 0)
            globalTime = 0.0167;
         else {
             globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
         }
         prevTime = currentNanoTime;
+        pcs.firePropertyChange("globalTime", prevTime, globalTime);
     }
 
     @Override
@@ -112,6 +114,14 @@ public class MainLoop extends AnimationTimer {
             car.stopCar();
         }
         super.stop();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChnageListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
     }
 
 

@@ -7,6 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 
@@ -27,6 +30,7 @@ public class ControlPanel implements Initializable {
     private Label IntersectLabel;
     @FXML
     private Label TimeLabel;
+    private DecimalFormat formatter = new DecimalFormat("#.0#####", DecimalFormatSymbols.getInstance( Locale.ENGLISH ));
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -60,7 +64,11 @@ public class ControlPanel implements Initializable {
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
         QuitBtn.setOnAction( ae -> Platform.exit());
         assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
-        TimeLabel.setText(String.valueOf(MainLoop.globalTime));
+        TimeLabel.setText( String.valueOf(MainLoop.globalTime));
 
+    }
+
+    public void setGlobalTime(double globalTime) {
+        TimeLabel.setText("GlobalTime: " + formatter.format(globalTime));
     }
 }

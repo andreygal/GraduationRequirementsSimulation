@@ -30,7 +30,7 @@ public class ControlPanel implements Initializable {
     private Label IntersectLabel;
     @FXML
     private Label TimeLabel;
-    private DecimalFormat formatter = new DecimalFormat("#.0#####", DecimalFormatSymbols.getInstance( Locale.ENGLISH ));
+    private DecimalFormat formatter = new DecimalFormat("#.0####", DecimalFormatSymbols.getInstance( Locale.ENGLISH ));
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {

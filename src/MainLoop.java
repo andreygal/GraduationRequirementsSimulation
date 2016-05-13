@@ -60,7 +60,7 @@ public class MainLoop extends AnimationTimer {
         gc.setFill(Color.BLACK);
         double degree = 0;
         double step = 360.0 / Main.numOfIntersections;
-        for (int i = 0; i < Main.numOfIntersections; i++) {
+        for (int i = 1; i <= Main.numOfIntersections; i++) {
             gc.save();
             Rotate rectRotate = new Rotate(degree, canvasCenterX, canvasCenterX);
             gc.setTransform(rectRotate.getMxx(),
@@ -73,6 +73,7 @@ public class MainLoop extends AnimationTimer {
                     canvasCenterY - outerBound - 40,
                     dashedMarkOffset,
                     outerBound + 40);
+            gc.strokeText(String.valueOf(i), canvasCenterX, canvasCenterY - outerBound - 50);
             degree += step;
             gc.restore();
         }

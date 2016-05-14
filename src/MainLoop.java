@@ -147,6 +147,7 @@ public class MainLoop extends AnimationTimer {
                     " Sim End Time " + caseRec.simEndTime);
             System.out.println("Queue size " +  caseRec.carQueue.size());
             CarRecord cr;
+            //found the bug sereg. i'm an idiot. queue size decreases as elements are removed. first thought the initial size would be somehow stored
             for (int j = 0; j < caseRec.carQueue.size(); j++) {
                 System.out.println(caseRec.carQueue.size());
                 cr = caseRec.carQueue.poll();

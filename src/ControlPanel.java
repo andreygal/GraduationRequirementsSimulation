@@ -67,7 +67,7 @@ public class ControlPanel implements Initializable {
         pcs.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChnageListener(PropertyChangeListener listener) {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         pcs.removePropertyChangeListener(listener);
     }
 }

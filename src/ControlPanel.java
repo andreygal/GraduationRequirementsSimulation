@@ -1,11 +1,14 @@
 import javafx.application.Platform;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -15,60 +18,60 @@ import java.util.ResourceBundle;
 
 public class ControlPanel implements Initializable {
     @FXML
+    private Button OpenBtn;
+    @FXML
     private Button StartBtn;
     @FXML
     private Button StopBtn;
     @FXML
     private Button QuitBtn;
     @FXML
-    private Slider CarSlider;
-    @FXML
-    private Label CarLabel;
-    @FXML
-    private Slider IntersectSlider;
-    @FXML
-    private Label IntersectLabel;
+    private Label StatusLabel;
     @FXML
     private Label TimeLabel;
-    private DecimalFormat formatter = new DecimalFormat("#.0#####", DecimalFormatSymbols.getInstance( Locale.ENGLISH ));
+
+    private final DecimalFormat formatter = new DecimalFormat("#.0#####", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+    private final FileChooser fileChooser = new FileChooser();
+    private File inputFile;
+    PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
-        //Initialize car slider
-        assert CarSlider != null : "fx:id=\"CarSlider\" was not injected: check your FXML file.";
-        CarSlider.valueProperty().addListener(
-                (ObservableValue<? extends Number> prop, Number oldVal, Number newVal) -> {
-                    if (CarSlider.isValueChanging()) {
-                        CarLabel.setText("Number of cars: ...");
-                    } else {
-                        Main.numOfCars = (int) CarSlider.getValue();
-                        CarLabel.setText("Number of cars: " + (int) CarSlider.getValue());
-                    }
-        });
-        //Initialize intersection slider
-        assert IntersectSlider != null : "fx:id=\"IntersectSlider\" was not injected: check your FXML file.";
-        IntersectSlider.valueProperty().addListener(
-                (ObservableValue<? extends Number> prop, Number oldVal, Number newVal) -> {
-                    if (IntersectSlider.isValueChanging()) {
-                        IntersectLabel.setText("Number of intersections: ...");
-                    } else {
-                        Main.numOfIntersections = (int) IntersectSlider.getValue();
-                        IntersectLabel.setText("Number of intersections: " + (int) IntersectSlider.getValue());
-                    }
-                });
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("Google Input Files", "*.in"));
         //Initialize button controls
+        assert OpenBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file";
+        OpenBtn.setOnAction(ae -> {
+            File oldFile = inputFile;
+            inputFile = fileChooser.showOpenDialog(new Stage());
+            System.out.println("Opening file");
+            this.pcs.firePropertyChange("inputFile", oldFile, inputFile);
+        });
         assert StartBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file.";
-        StartBtn.setOnAction( ae -> Main.mainLoop.start());
+        StartBtn.setOnAction(ae -> Main.mainLoop.start());
         assert StopBtn != null : "fx:id=\"StopBtn\" was not injected: check your FXML file.";
-        StopBtn.setOnAction( ae -> Main.mainLoop.stop());
+        StopBtn.setOnAction(ae -> Main.mainLoop.stop());
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
-        QuitBtn.setOnAction( ae -> Platform.exit());
+        QuitBtn.setOnAction(ae -> Platform.exit());
         assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
-        TimeLabel.setText( String.valueOf(MainLoop.globalTime));
+        TimeLabel.setText(String.valueOf(MainLoop.globalTime));
 
     }
 
     public void setGlobalTime(double globalTime) {
         TimeLabel.setText("GlobalTime: " + formatter.format(globalTime));
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        pcs.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChnageListener(PropertyChangeListener listener) {
+        pcs.removePropertyChangeListener(listener);
+    }
 }
+
+
+
+

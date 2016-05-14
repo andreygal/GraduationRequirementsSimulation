@@ -145,11 +145,14 @@ public class MainLoop extends AnimationTimer {
                     " Num of cars " + caseRec.numOfCars +
                     " Num of inter " + caseRec.numOfIntersections +
                     " Sim End Time " + caseRec.simEndTime);
+            System.out.println("Queue size " +  caseRec.carQueue.size());
+            CarRecord cr;
             for (int j = 0; j < caseRec.carQueue.size(); j++) {
-                CarRecord carRec = caseRec.carQueue.remove();
-                System.out.println("s " + carRec.startIntersection +
-                        " e " + carRec.endIntersection +
-                        " t " + carRec.startTime);
+                System.out.println(caseRec.carQueue.size());
+                cr = caseRec.carQueue.poll();
+                System.out.println("s " + cr.startIntersection +
+                        " e " + cr.endIntersection +
+                        " t " + cr.startTime);
             }
         }
     }

@@ -24,7 +24,7 @@ public class Main extends Application {
     static MainLoop mainLoop;
     //input management
     File inputFile;
-    ArrayList<CaseRecord> cases = new ArrayList<>();
+    static ArrayList<CaseRecord> cases = new ArrayList<>();
 
     private void readFile(File inputFile){
         Scanner sc = null;
@@ -41,15 +41,16 @@ public class Main extends Application {
             int X = sc.nextInt();
             CaseRecord caseRec = new CaseRecord(i, C, N, X);
 
-            for (int j = 0; i < C; i++) {
+            for (int j = 0; j < C; j++) {
                 int s = sc.nextInt(); //start intersection
                 int e = sc.nextInt(); //end intersection
                 int t = sc.nextInt(); //start time
                 caseRec.carQueue.add(new CarRecord(s, e, t));
             }
+            cases.add(caseRec);
         }
 
-
+        sc.close();
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Main extends Application {
         //Add UI Control Panel (right side) and store a reference to Panel Control
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent UIPanel = fxmlLoader.load(getClass().getResource("UIGraduationRequirements.fxml").openStream());
-        ControlPanel controlPanel = fxmlLoader.getController();
+            ControlPanel controlPanel = fxmlLoader.getController();
 
         //JavaFX setup: setup up Border Pane
         primaryStage.setTitle("Graduation Requirements Simulator");
@@ -88,24 +89,13 @@ public class Main extends Application {
             inputFile = (File) propertyChanged.getNewValue();
             readFile(inputFile);
             System.out.println(inputFile.getAbsoluteFile());
-            for (CaseRecord caseRec : cases) {
-              System.out.println("Case num " + caseRec.caseNum +
-                                 " Num of cars " + caseRec.numOfCars +
-                                 " Num of inter " + caseRec.numOfIntersections +
-                                 " Sim End Time " + caseRec.simEndTime);
-                for (CarRecord carRec : caseRec.carQueue) {
-                    System.out.println("s " + carRec.startIntersection +
-                                       "e " + carRec.endIntersection +
-                                       "t " + carRec.startTime);
-                }
-            }
-        });
 
+        });
 
         primaryStage.show();
     }
     
-    
+
 
     public static void main(String[] args) {
         launch(args);

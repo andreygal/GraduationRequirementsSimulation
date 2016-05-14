@@ -15,5 +15,6 @@ public class CaseRecord {
         this.numOfCars = numOfCars; //C
         this.numOfIntersections = numOfIntersections; //N
         this.simEndTime = simEndTime; //X
+        carQueue = new PriorityQueue<>(new CompByStartTime());
     }
 }

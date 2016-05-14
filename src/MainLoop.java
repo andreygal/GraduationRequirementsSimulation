@@ -55,6 +55,7 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars)
             car.startCar();
         System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);
+        test();
         super.start();
     }
 
@@ -137,6 +138,21 @@ public class MainLoop extends AnimationTimer {
         pcs.removePropertyChangeListener(listener);
     }
 
+    public void test() {
+        System.out.println("Testing data...");
+        for (CaseRecord caseRec : Main.cases) {
+            System.out.println("Case num " + caseRec.caseNum +
+                    " Num of cars " + caseRec.numOfCars +
+                    " Num of inter " + caseRec.numOfIntersections +
+                    " Sim End Time " + caseRec.simEndTime);
+            for (int j = 0; j < caseRec.carQueue.size(); j++) {
+                CarRecord carRec = caseRec.carQueue.remove();
+                System.out.println("s " + carRec.startIntersection +
+                        " e " + carRec.endIntersection +
+                        " t " + carRec.startTime);
+            }
+        }
+    }
 
 
 }

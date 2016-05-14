@@ -134,7 +134,7 @@ public class MainLoop extends AnimationTimer {
         pcs.addPropertyChangeListener(listener);
     }
 
-    public void removePropertyChnageListener(PropertyChangeListener listener) {
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
         pcs.removePropertyChangeListener(listener);
     }
 

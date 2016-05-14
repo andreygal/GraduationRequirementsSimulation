@@ -10,8 +10,9 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Main extends Application {
@@ -21,7 +22,35 @@ public class Main extends Application {
 
     static Canvas canvas;
     static MainLoop mainLoop;
+    //input management
     File inputFile;
+    ArrayList<CaseRecord> cases = new ArrayList<>();
+
+    private void readFile(File inputFile){
+        Scanner sc = null;
+        try {
+            sc = new Scanner(new FileReader(inputFile));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        int caseCnt = sc.nextInt();
+        for (int i = 1; i <= caseCnt; i++) {
+            int C = sc.nextInt();
+            int N = sc.nextInt();
+            int X = sc.nextInt();
+            CaseRecord caseRec = new CaseRecord(i, C, N, X);
+
+            for (int j = 0; i < C; i++) {
+                int s = sc.nextInt(); //start intersection
+                int e = sc.nextInt(); //end intersection
+                int t = sc.nextInt(); //start time
+                caseRec.carQueue.add(new CarRecord(s, e, t));
+            }
+        }
+
+
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception

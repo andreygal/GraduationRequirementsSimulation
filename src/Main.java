@@ -86,7 +86,19 @@ public class Main extends Application {
         //set up a stream for reading the input file
         controlPanel.addPropertyChangeListener( propertyChanged -> {
             inputFile = (File) propertyChanged.getNewValue();
+            readFile(inputFile);
             System.out.println(inputFile.getAbsoluteFile());
+            for (CaseRecord caseRec : cases) {
+              System.out.println("Case num " + caseRec.caseNum +
+                                 " Num of cars " + caseRec.numOfCars +
+                                 " Num of inter " + caseRec.numOfIntersections +
+                                 " Sim End Time " + caseRec.simEndTime);
+                for (CarRecord carRec : caseRec.carQueue) {
+                    System.out.println("s " + carRec.startIntersection +
+                                       "e " + carRec.endIntersection +
+                                       "t " + carRec.startTime);
+                }
+            }
         });
 
 

@@ -1,7 +1,6 @@
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 public class Car implements Runnable {
 
@@ -51,8 +50,9 @@ public class Car implements Runnable {
 
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
-        positionX = centerX + radius * Math.cos(offset + time * angularVelocity);
-        positionY = centerY + radius * Math.sin(offset + time * angularVelocity);
+        //interserctRads array strores negative angles as canvas uses clockwise rotation as positive
+        positionX = centerX + radius * Math.cos(time * angularVelocity - offset);
+        positionY = centerY + radius * Math.sin(time * angularVelocity - offset);
         //System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
@@ -63,12 +63,11 @@ public class Car implements Runnable {
     private void enterIntersection() throws InterruptedException {
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
-        double timeToLane = Math.floor(prevTime + 20) - prevTime;
+        double timeToLane = Math.floor(prevTime + 5) - prevTime;
         double radReductionRate = (startStopRadius - radius) / timeToLane;
+
         double currRadius = startStopRadius;
-        System.out.println("Moving to lane");
         while(MainLoop.globalTime - startTime < timeToLane) {
-            System.out.println("Loop");
                 currRadius -= (radReductionRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius
                 positionX = centerX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
@@ -78,14 +77,12 @@ public class Car implements Runnable {
         }
     }
 
+    private void leaveCircle() {
 
-
-    public void exitIntersection() {}
-
+    }
 
     public void render(GraphicsContext gc) {
         gc.drawImage(carImage, positionX, positionY);
-
     }
 
     public Rectangle2D getBoundary() {

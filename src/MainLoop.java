@@ -9,32 +9,49 @@ import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
-    ArrayList<Car> cars = new ArrayList<>();
+    //Logic
+    ArrayList<Car> cars;
+    ArrayList<Double> intersectDegree;
+    static ArrayList<Double> intersectRads;
+    //Graphics
     Image carImage;
     GraphicsContext gc;
 
-    final public double ISLAND_WIDTH  = 40;
-    final public double ISLAND_HEIGHT = 40;
-    final public double dashedMarkOffset = 28;
+    final static double ISLAND_WIDTH  = 40;
+    final static double ISLAND_HEIGHT = 40;
+    final static double dashedMarkOffset = 28;
 
-    public double canvasCenterX = Main.canvas.getWidth()/2.0;
-    public double canvasCenterY = Main.canvas.getHeight()/2.0;
+    public double canvasCenterX = Main.canvas.getWidth() / 2.0;
+    public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
     static double globalTime = 0.0;
+    static double outerBound;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
-
+        cars = new ArrayList<>();
+        intersectDegree = new ArrayList<>();
+        intersectRads = new ArrayList<>();
         gc = Main.canvas.getGraphicsContext2D();
     }
 
     @Override
     public void start() {
+        prevTime = System.nanoTime();
+        outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
+        //initialize degree offset arrays
+        for (int i = 0; i < Main.numOfIntersections; i++) {
+            intersectDegree.add(90.0 + (360.0 / Main.numOfIntersections) * i);
+            intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
+        }
+
         cars.add(new Car (carImage, canvasCenterX - carImage.getWidth() / 2.0,
                                     canvasCenterY - carImage.getHeight() / 2.0,
-                ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0) * 3 , "Test Car"));
+                ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0) * 3 , 1));
+
         for (Car car : cars)
             car.startCar();
         System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);
@@ -52,17 +69,15 @@ public class MainLoop extends AnimationTimer {
 
         //Draw the asphalt
         gc.setFill(Color.BLACK);
-        double outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
+
         gc.fillOval(canvasCenterX - outerBound, canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 
         //Draw the intersections
         gc.setFill(Color.BLACK);
-        double degree = 0;
-        double step = 360.0 / Main.numOfIntersections;
-        for (int i = 0; i < Main.numOfIntersections; i++) {
+        for (int i = 1; i <= Main.numOfIntersections; i++) {
             gc.save();
-            Rotate rectRotate = new Rotate(degree, canvasCenterX, canvasCenterX);
+            Rotate rectRotate = new Rotate(-intersectDegree.get(i - 1) + 90, canvasCenterX, canvasCenterX);
             gc.setTransform(rectRotate.getMxx(),
                     rectRotate.getMyx(),
                     rectRotate.getMxy(),
@@ -73,7 +88,7 @@ public class MainLoop extends AnimationTimer {
                     canvasCenterY - outerBound - 40,
                     dashedMarkOffset,
                     outerBound + 40);
-            degree += step;
+            gc.strokeText(String.valueOf(i), canvasCenterX, canvasCenterY - outerBound - 50);
             gc.restore();
         }
 
@@ -99,11 +114,9 @@ public class MainLoop extends AnimationTimer {
             car.render(gc);
         }
 
-        if (prevTime == 0)
-           globalTime = 0.0167;
-        else {
-            globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
-        }
+
+
+        globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
         prevTime = currentNanoTime;
         pcs.firePropertyChange("globalTime", prevTime, globalTime);
     }

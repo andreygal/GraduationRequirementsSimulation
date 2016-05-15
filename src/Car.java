@@ -9,14 +9,18 @@ public class Car implements Runnable {
     //axis is shifted to correctly render the position of a car due to image's rotation point being the upper left corner
     private static double  rotCenterX;
     private static double  rotCenterY;
-    //private static double  imageWidth;
-    //private static double  imageHeight;
-    private static Image   carImage;
-    private double positionX;
-    private double positionY;
     private double centXoffset;
     private double centYoffset;
-    private double radius = 34;
+    //position is calculated from polar coordinates
+    private double positionX;
+    private double positionY;
+    private double radius = ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0);
+    //private static double  imageWidth;
+    //private static double  imageHeight;
+    private static Image carImage;
+    
+   
+    
     private double startStopRadius;
     private int startIntersection;
     private int endIntersection;
@@ -30,22 +34,22 @@ public class Car implements Runnable {
     boolean moving;
     Thread carThread;
 
-    public Car(Image carImage, double radius, int startIntersection, int endIntersection) {
+    public Car(Image carImage, int lane, double radius, int startIntersection, int endIntersection) {
         this.carImage = carImage;
+        this.startIntersection = startIntersection;
+        this.endIntersection = endIntersection;
         //calculate offset for the axis of rotation
         centXoffset = this.carImage.getWidth() / 2.0;
         centYoffset = this.carImage.getHeight() / 2.0;
         //set axis of rotation
-        
-        this.startIntersection = startIntersection;
         rotCenterX = Main.canvasCenterX - centXoffset;
         rotCenterY = Main.canvasCenterY - centYoffset;
-       
+        //calculate the radius for a given lane
+        radius = ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0) * lane;
         //consider removing 
         //this.imageWidth = carImage.getWidth();
         //this.imageHeight = carImage.getHeight();
         
-        this.radius = radius;
         this.startStopRadius = MainLoop.outerBound + 20;
         //set the starting position to be the intersection with traffic circle
         this.positionX = centerX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));

@@ -64,7 +64,7 @@ public class Main extends Application {
         canvas = new Canvas(canvasSide, canvasSide);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
-        gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
+        gc.fillRect(0, 0, canvasSide, canvasSide);
 
         //Add UI Control Panel (right side) and store a reference to Panel Control
         FXMLLoader fxmlLoader = new FXMLLoader();

@@ -19,6 +19,10 @@ public class Main extends Application {
     //static int numOfCars = 1;
     //static int numOfIntersections = 1;
     static double arcAngle = 2 * Math.PI / (double) numOfIntersections;
+    //canvas is a square
+    final private double canvasSide = 720;
+    final static double canvasCenterX = canvasSide / 2.0;
+    final static double canvasCenterY = canvasSide / 2.0;
 
     static Canvas canvas;
     static MainLoop mainLoop;
@@ -57,7 +61,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception
     {
         //set up left side
-        canvas = new Canvas(720, 720);
+        canvas = new Canvas(canvasSide, canvasSide);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());

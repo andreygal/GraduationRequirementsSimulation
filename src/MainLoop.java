@@ -85,8 +85,7 @@ public class MainLoop extends AnimationTimer {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
         if ((currentCase.carQueue.peek() != null) &&
-                //we need to start the car at a time GivenStartTime - OurChosenOffset
-                (currentCase.carQueue.peek().startTime >= Math.floor(globalTime < 0 ? enterInterTimeOffset : (globalTime - enterInterTimeOffset)))) {
+                (globalTime - (globalTime < 0 ? -enterInterTimeOffset : enterInterTimeOffset) >= currentCase.carQueue.peek().startTime)) {
                     CarRecord cr = currentCase.carQueue.poll();
                     cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
                     cars.get(carCounter).startCar();

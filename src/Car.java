@@ -68,8 +68,8 @@ public class Car implements Runnable {
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
         //interserctRads array strores negative angles as canvas uses clockwise rotation as positive
-        positionX = rotCenterX + radius * Math.cos(time * angularVelocity - offset);
-        positionY = rotCenterY + radius * Math.sin(time * angularVelocity - offset);
+        positionX = rotCenterX + radius * Math.cos(Math.abs(time) * angularVelocity - offset);
+        positionY = rotCenterY + radius * Math.sin(Math.abs(time) * angularVelocity - offset);
         //System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
@@ -81,7 +81,7 @@ public class Car implements Runnable {
         System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
-        double timeToLane = Math.floor(prevTime + 5) - prevTime;
+        double timeToLane = Math.floor(prevTime + 3.0) - prevTime;
         double radReductionRate = (startStopRadius - radius) / timeToLane;
 
         double currRadius = startStopRadius;

@@ -21,7 +21,7 @@ public class MainLoop extends AnimationTimer {
     final static double ISLAND_WIDTH  = 40;
     final static double ISLAND_HEIGHT = 40;
     final static double dashedMarkOffset = 28;
-    final private double enterInterTimeOffset = 3.0;
+    final static double enterInterTimeOffset = 3.0;
 
     //public double canvasCenterX = Main.canvas.getWidth() / 2.0;
     //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
@@ -37,6 +37,7 @@ public class MainLoop extends AnimationTimer {
     private int currCaseIndex = 0;
     private int numOfIntersections;
     private int numOfCars;
+    private int carCounter = 0;
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
@@ -84,9 +85,12 @@ public class MainLoop extends AnimationTimer {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
         if ((currentCase.carQueue.peek() != null) &&
-                (currentCase.carQueue.peek().startTime >= Math.floor(Math.abs(globalTime) - enterInterTimeOffset))) {
+                //we need to start the car at a time GivenStartTime - OurChosenOffset
+                (currentCase.carQueue.peek().startTime >= Math.floor(globalTime < 0 ? enterInterTimeOffset : (globalTime - enterInterTimeOffset)))) {
                     CarRecord cr = currentCase.carQueue.poll();
                     cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
+                    cars.get(carCounter).startCar();
+                    carCounter++;
         }
 
         //Dynamically draw the background

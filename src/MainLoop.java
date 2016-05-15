@@ -35,8 +35,8 @@ public class MainLoop extends AnimationTimer {
     CaseRecord currentCase;
     int currCaseIndex = 0;
     int numOfIntersections;
+    int numOfCars;
     double enterInterTimeOffset = 3.0;
-
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
@@ -55,13 +55,14 @@ public class MainLoop extends AnimationTimer {
         currCaseIndex++;
         globTimeLimit = currentCase.simEndTime;
         numOfIntersections = currentCase.numOfIntersections;
+        numOfCars = currentCase.numOfCars;
         
         //calculate the radial limit of the traffic circle 
-        outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
+        outerBound = (numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
         
         //initialize degree offset arrays
-        for (int i = 0; i < Main.numOfIntersections; i++) {
-            intersectDegree.add(90.0 + (360.0 / Main.numOfIntersections) * i);
+        for (int i = 0; i < numOfIntersections; i++) {
+            intersectDegree.add(90.0 + (360.0 / numOfIntersections) * i);
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
        
@@ -72,7 +73,7 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars)
             car.startCar();*/
         
-        System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);
+        System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
         test();
         super.start();
     }
@@ -83,7 +84,7 @@ public class MainLoop extends AnimationTimer {
         //peek at the queue and see if the next car is read to enter the traffic circle
         if (currentCase.carQueue.peek().startTime >= Math.floor(globalTime - enterInterTimeOffset)) {
             CarRecord cr = currentCase.carQueue.poll();
-            cars.add(carImage, 1, cr.startIntersection(), cr.endIntersection());
+            cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
         }
 
         //Dynamically draw the background
@@ -94,7 +95,7 @@ public class MainLoop extends AnimationTimer {
         //Draw the asphalt
         gc.setFill(Color.BLACK);
 
-        gc.fillOval(canvasCenterX - outerBound, canvasCenterY - outerBound,
+        gc.fillOval(Main.canvasCenterX - outerBound, Main.canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 
         //Draw the intersections
@@ -108,10 +109,10 @@ public class MainLoop extends AnimationTimer {
                     rectRotate.getMyy(),
                     rectRotate.getTx(),
                     rectRotate.getTy());
-            gc.fillRect(canvasCenterX - dashedMarkOffset / 2.0,
-                    canvasCenterY - outerBound - 40,
-                    dashedMarkOffset,
-                    outerBound + 40);
+            gc.fillRect(Main.canvasCenterX - dashedMarkOffset / 2.0,
+                        Main.canvasCenterY - outerBound - 40,
+                             dashedMarkOffset,
+                             outerBound + 40);
             gc.strokeText(String.valueOf(i), Main.canvasCenterX, Main.canvasCenterY - outerBound - 50);
             gc.restore();
         }
@@ -125,7 +126,7 @@ public class MainLoop extends AnimationTimer {
         double trackRadiusOfCurv;
         gc.setStroke(Color.WHITE);
         gc.setLineDashes(12f);
-        for (int i = 1; i <= Main.numOfCars; i++) {
+        for (int i = 1; i <= numOfCars; i++) {
             trackRadiusOfCurv = (ISLAND_WIDTH / 2.0) + dashedMarkOffset * i;
             System.out.println("Drawing lanes.");
             gc.strokeOval(Main.canvasCenterX - trackRadiusOfCurv,

@@ -22,6 +22,7 @@ public class Car implements Runnable {
     private double startStopRadius;
     private int startIntersection;
     private int endIntersection;
+    private double exitTime;
     //update arc is the subtended arc after which update is called.
     //we want to update the image every 2 pixels
     private double updateArc      =  2.0 / radius;
@@ -54,7 +55,7 @@ public class Car implements Runnable {
         //set the starting position to be at a given intersection
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
-        
+        exitTime = MainLoop.globalTime + Math.abs();
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);
@@ -77,7 +78,7 @@ public class Car implements Runnable {
         moving = false;
     }
 
-    private void enterIntersection() throws InterruptedException {
+    private void enterCircle() throws InterruptedException {
         System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
@@ -95,9 +96,10 @@ public class Car implements Runnable {
         }
         moving = true;
     }
-
-    private void leaveCircle() {
-
+    
+     private void leaveCircle() {
+        System.out.println("Car leaving the circle");
+        
     }
 
     public void render(GraphicsContext gc) {
@@ -119,12 +121,12 @@ public class Car implements Runnable {
         long elapsedTime = 0;
 
         try {
-            enterIntersection();
+            enterCircle();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        while(moving) {
+        while(moving && globalTime <= exitTime) {
             if (elapsedTime >= updateIntervalMilli) {
                 update(MainLoop.globalTime);
                 elapsedTime = 0;
@@ -135,6 +137,7 @@ public class Car implements Runnable {
             //System.out.println("Inside car run: updating car position");
             //System.out.println("Position " + positionX + ", " + positionY);
         }
-
+        //leave the traffic circle
+        leaveCircle();
     }
 }

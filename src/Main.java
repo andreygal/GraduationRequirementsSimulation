@@ -41,8 +41,8 @@ public class Main extends Application {
         int caseCnt = sc.nextInt();
         for (int i = 1; i <= caseCnt; i++) {
             int C = sc.nextInt();
-            int N = sc.nextInt();
             int X = sc.nextInt();
+            int N = sc.nextInt();
             CaseRecord caseRec = new CaseRecord(i, C, N, X);
 
             for (int j = 0; j < C; j++) {

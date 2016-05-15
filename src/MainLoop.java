@@ -21,6 +21,7 @@ public class MainLoop extends AnimationTimer {
     final static double ISLAND_WIDTH  = 40;
     final static double ISLAND_HEIGHT = 40;
     final static double dashedMarkOffset = 28;
+    final private double enterInterTimeOffset = 3.0;
 
     //public double canvasCenterX = Main.canvas.getWidth() / 2.0;
     //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
@@ -36,7 +37,6 @@ public class MainLoop extends AnimationTimer {
     private int currCaseIndex = 0;
     private int numOfIntersections;
     private int numOfCars;
-    private double enterInterTimeOffset = 3.0;
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));

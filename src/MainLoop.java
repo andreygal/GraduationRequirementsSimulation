@@ -82,7 +82,8 @@ public class MainLoop extends AnimationTimer {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
         if (currentCase.carQueue.peek().startTime >= Math.floor(globalTime - enterInterTimeOffset)) {
-            cars.add(currentCase.carQueue.poll());
+            CarRecord cr = currentCase.carQueue.poll();
+            cars.add(carImage, 1, cr.startIntersection(), cr.endIntersection());
         }
 
         //Dynamically draw the background

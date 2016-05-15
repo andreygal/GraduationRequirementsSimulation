@@ -6,13 +6,15 @@ public class Car implements Runnable {
 
     //angular velocity in rads/s
     static double  angularVelocity;
-    static double  centerX;
-    static double  centerY;
+    static double  rotCenterX;
+    static double  rotCenterY;
     static double  imageWidth;
     static double  imageHeight;
     static Image   carImage;
     private double positionX;
     private double positionY;
+    private double centXoffset;
+    private double centYoffset;
     private double radius = 34;
     private double startStopRadius;
     private int startIntersection;
@@ -28,9 +30,15 @@ public class Car implements Runnable {
 
     public Car(Image carImage, double centerX, double centerY, double radius, int startIntersection) {
         this.carImage = carImage;
+        //calculate offset for the axis of rotation
+        centXoffset = this.carImage.getWidth() / 2.0;
+        centYoffset = this.carImage.getHeight() / 2.0;
+        //set axis of rotation
+        
         this.startIntersection = startIntersection;
         this.centerX = centerX;
         this.centerY = centerY;
+        
         this.imageWidth = carImage.getWidth();
         this.imageHeight = carImage.getHeight();
         this.radius = radius;

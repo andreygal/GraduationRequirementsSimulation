@@ -5,12 +5,12 @@ import javafx.scene.image.Image;
 public class Car implements Runnable {
 
     //angular velocity in rads/s
-    static double  angularVelocity;
-    static double  rotCenterX;
-    static double  rotCenterY;
-    static double  imageWidth;
-    static double  imageHeight;
-    static Image   carImage;
+    private static double  angularVelocity;
+    private static double  rotCenterX;
+    private static double  rotCenterY;
+    private static double  imageWidth;
+    private static double  imageHeight;
+    private static Image   carImage;
     private double positionX;
     private double positionY;
     private double centXoffset;
@@ -46,7 +46,7 @@ public class Car implements Runnable {
         //set the starting position to be the intersection with traffic circle
         this.positionX = centerX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = centerY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
-        //cars move counter-clockwise
+        //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) Main.numOfIntersections));
         carThread = new Thread(this);
     }

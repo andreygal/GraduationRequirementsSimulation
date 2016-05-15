@@ -35,7 +35,7 @@ public class MainLoop extends AnimationTimer {
     CaseRecord currentCase;
     int currCaseIndex = 0;
     int numOfIntersections;
-    
+    double enterInterTimeOffset = 4.0;
 
 
     public MainLoop() {
@@ -55,10 +55,6 @@ public class MainLoop extends AnimationTimer {
         globTimeLimit = currentCase.simEndTime;
         numOfIntersections = currentCase.numOfIntersections;
         
-        
-        
-        
-        
         //calculate the radial limit of the traffic circle 
         outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
         //initialize degree offset arrays
@@ -67,7 +63,6 @@ public class MainLoop extends AnimationTimer {
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
        
-
         /*test car
         cars.add(new Car (carImage, canvasCenterX - carImage.getWidth() / 2.0,
                                     canvasCenterY - carImage.getHeight() / 2.0,
@@ -83,6 +78,10 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void handle(long currentNanoTime) {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
+        //peek at the queue and see if the next car is read to enter the traffic circle
+        if (Math.floor(currentCase.carQueue.peek().startTime) >= globalTime - enterInterTimeOffset) {
+            
+        }
 
         //Dynamically draw the background
         //Draw the grass
@@ -97,7 +96,7 @@ public class MainLoop extends AnimationTimer {
 
         //Draw the intersections
         gc.setFill(Color.BLACK);
-        for (int i = 1; i <= Main.numOfIntersections; i++) {
+        for (int i = 1; i <= numOfIntersections; i++) {
             gc.save();
             Rotate rectRotate = new Rotate(-intersectDegree.get(i - 1) + 90, canvasCenterX, canvasCenterX);
             gc.setTransform(rectRotate.getMxx(),

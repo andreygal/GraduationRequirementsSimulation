@@ -27,7 +27,7 @@ public class MainLoop extends AnimationTimer {
     //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
-    static double globalTime = -5.0;
+    static double globalTime = 0.0;
     static int    globTimeLimit;
     
     static double outerBound;
@@ -84,8 +84,9 @@ public class MainLoop extends AnimationTimer {
     public void handle(long currentNanoTime) {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
-        if ((currentCase.carQueue.peek() != null) &&
-                (globalTime - (globalTime < 0 ? -enterInterTimeOffset : enterInterTimeOffset) >= currentCase.carQueue.peek().startTime)) {
+        while ((currentCase.carQueue.peek() != null) &&
+                //deal with positive glob time cases first
+                (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
                     CarRecord cr = currentCase.carQueue.poll();
                     cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
                     cars.get(carCounter).startCar();

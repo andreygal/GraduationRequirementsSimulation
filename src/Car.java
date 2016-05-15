@@ -67,10 +67,10 @@ public class Car implements Runnable {
 
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
-        //interserctRads array strores negative angles as canvas uses clockwise rotation as positive
+        //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
         positionX = rotCenterX + radius * Math.cos(Math.abs(time) * angularVelocity - offset);
         positionY = rotCenterY + radius * Math.sin(Math.abs(time) * angularVelocity - offset);
-        //System.out.println("Updating position x " + positionX + " y " + positionY);
+        System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
     public void stopCar() {
@@ -81,7 +81,7 @@ public class Car implements Runnable {
         System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
-        double timeToLane = Math.floor(prevTime + 3.0) - prevTime;
+        double timeToLane = Math.abs(Math.floor(prevTime + MainLoop.enterInterTimeOffset) - prevTime);
         double radReductionRate = (startStopRadius - radius) / timeToLane;
 
         double currRadius = startStopRadius;
@@ -93,6 +93,7 @@ public class Car implements Runnable {
                 prevTime = MainLoop.globalTime;
                 Thread.sleep(20);
         }
+        moving = true;
     }
 
     private void leaveCircle() {
@@ -113,8 +114,8 @@ public class Car implements Runnable {
 
     @Override
     public void run() {
-        moving = true;
-        long startTime = System.currentTimeMillis();
+        moving = false;
+        long updateStartTime = System.currentTimeMillis();
         long elapsedTime = 0;
 
         try {
@@ -127,10 +128,10 @@ public class Car implements Runnable {
             if (elapsedTime >= updateIntervalMilli) {
                 update(MainLoop.globalTime);
                 elapsedTime = 0;
-                startTime = System.currentTimeMillis();
+                updateStartTime = System.currentTimeMillis();
             }
 
-            elapsedTime = System.currentTimeMillis() - startTime;
+            elapsedTime = System.currentTimeMillis() - updateStartTime;
             //System.out.println("Inside car run: updating car position");
             //System.out.println("Position " + positionX + ", " + positionY);
         }

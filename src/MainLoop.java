@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class MainLoop extends AnimationTimer {
     //Logic
+    //current active car list
     ArrayList<Car> cars;
     ArrayList<Double> intersectDegree;
     static ArrayList<Double> intersectRads;
@@ -26,8 +27,15 @@ public class MainLoop extends AnimationTimer {
 
     static long   prevTime = 0;
     static double globalTime = 0.0;
+    static int    globTimeLimit;
+    
     static double outerBound;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    
+    CaseRecord currentCase;
+    int currCaseIndex = 0;
+    int numOfIntersections;
+    
 
 
     public MainLoop() {
@@ -41,19 +49,32 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void start() {
         prevTime = System.nanoTime();
+         //get the next case and initialize case parameters
+        currentCase = Main.cases.get(currCaseIndex);
+        currCaseIndex++;
+        globTimeLimit = currentCase.simEndTime;
+        numOfIntersections = currentCase.numOfIntersections;
+        
+        
+        
+        
+        
+        //calculate the radial limit of the traffic circle 
         outerBound = (Main.numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
         //initialize degree offset arrays
         for (int i = 0; i < Main.numOfIntersections; i++) {
             intersectDegree.add(90.0 + (360.0 / Main.numOfIntersections) * i);
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
+       
 
+        /*test car
         cars.add(new Car (carImage, canvasCenterX - carImage.getWidth() / 2.0,
                                     canvasCenterY - carImage.getHeight() / 2.0,
                 ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0) * 3 , 1));
-
         for (Car car : cars)
-            car.startCar();
+            car.startCar();*/
+        
         System.out.println("Center is at " + canvasCenterX + " " + canvasCenterY);
         test();
         super.start();

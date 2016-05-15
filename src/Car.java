@@ -18,9 +18,6 @@ public class Car implements Runnable {
     //private static double  imageWidth;
     //private static double  imageHeight;
     private static Image carImage;
-    
-   
-    
     private double startStopRadius;
     private int startIntersection;
     private int endIntersection;
@@ -49,11 +46,12 @@ public class Car implements Runnable {
         //consider removing 
         //this.imageWidth = carImage.getWidth();
         //this.imageHeight = carImage.getHeight();
-        
+        //parameters for steering the car onto the lane 
         this.startStopRadius = MainLoop.outerBound + 20;
-        //set the starting position to be the intersection with traffic circle
+        //set the starting position to be at a given intersection
         this.positionX = centerX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = centerY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
+        
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) Main.numOfIntersections));
         carThread = new Thread(this);

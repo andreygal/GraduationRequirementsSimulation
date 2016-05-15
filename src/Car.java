@@ -31,7 +31,7 @@ public class Car implements Runnable {
     boolean moving;
     Thread carThread;
 
-    public Car(Image carImage, int lane, double radius, int startIntersection, int endIntersection) {
+    public Car(Image carImage, int lane, int startIntersection, int endIntersection) {
         this.carImage = carImage;
         this.startIntersection = startIntersection;
         this.endIntersection = endIntersection;

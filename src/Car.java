@@ -6,10 +6,11 @@ public class Car implements Runnable {
 
     //angular velocity in rads/s
     private static double  angularVelocity;
+    //axis is shifted to correctly render the position of a car due to image's rotation point being the upper left corner
     private static double  rotCenterX;
     private static double  rotCenterY;
-    private static double  imageWidth;
-    private static double  imageHeight;
+    //private static double  imageWidth;
+    //private static double  imageHeight;
     private static Image   carImage;
     private double positionX;
     private double positionY;
@@ -28,7 +29,7 @@ public class Car implements Runnable {
     boolean moving;
     Thread carThread;
 
-    public Car(Image carImage, double centerX, double centerY, double radius, int startIntersection) {
+    public Car(Image carImage, double radius, int startIntersection) {
         this.carImage = carImage;
         //calculate offset for the axis of rotation
         centXoffset = this.carImage.getWidth() / 2.0;
@@ -36,11 +37,13 @@ public class Car implements Runnable {
         //set axis of rotation
         
         this.startIntersection = startIntersection;
-        this.centerX = centerX;
-        this.centerY = centerY;
+        rotCenterX = Main.canvasCenterX - centXoffset;
+        rotCenterY = Main.canvasCenterY - centYoffset;
+       
+        //consider removing 
+        //this.imageWidth = carImage.getWidth();
+        //this.imageHeight = carImage.getHeight();
         
-        this.imageWidth = carImage.getWidth();
-        this.imageHeight = carImage.getHeight();
         this.radius = radius;
         this.startStopRadius = MainLoop.outerBound + 20;
         //set the starting position to be the intersection with traffic circle

@@ -19,6 +19,7 @@ public class Car implements Runnable {
     private double radius = 34;
     private double startStopRadius;
     private int startIntersection;
+    private int endIntersection;
     //update arc is the subtended arc after which update is called.
     //we want to update the image every 2 pixels
     private double updateArc      =  2.0 / radius;
@@ -29,7 +30,7 @@ public class Car implements Runnable {
     boolean moving;
     Thread carThread;
 
-    public Car(Image carImage, double radius, int startIntersection) {
+    public Car(Image carImage, double radius, int startIntersection, int endIntersection) {
         this.carImage = carImage;
         //calculate offset for the axis of rotation
         centXoffset = this.carImage.getWidth() / 2.0;

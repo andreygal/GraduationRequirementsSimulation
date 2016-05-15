@@ -26,17 +26,17 @@ public class MainLoop extends AnimationTimer {
     //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
-    static double globalTime = 0.0;
+    static double globalTime = -5.0;
     static int    globTimeLimit;
     
     static double outerBound;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
-    CaseRecord currentCase;
-    int currCaseIndex = 0;
-    int numOfIntersections;
-    int numOfCars;
-    double enterInterTimeOffset = 3.0;
+    private CaseRecord currentCase;
+    private int currCaseIndex = 0;
+    private int numOfIntersections;
+    private int numOfCars;
+    private double enterInterTimeOffset = 3.0;
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
@@ -74,7 +74,8 @@ public class MainLoop extends AnimationTimer {
             car.startCar();*/
         
         System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
-        test();
+        System.out.println("Size of priority queue " + currentCase.carQueue.size());
+        //test();
         super.start();
     }
 
@@ -82,9 +83,10 @@ public class MainLoop extends AnimationTimer {
     public void handle(long currentNanoTime) {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
-        if (currentCase.carQueue.peek().startTime >= Math.floor(globalTime - enterInterTimeOffset)) {
-            CarRecord cr = currentCase.carQueue.poll();
-            cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
+        if ((currentCase.carQueue.peek() != null) &&
+                (currentCase.carQueue.peek().startTime >= Math.floor(Math.abs(globalTime) - enterInterTimeOffset))) {
+                    CarRecord cr = currentCase.carQueue.poll();
+                    cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
         }
 
         //Dynamically draw the background
@@ -171,10 +173,8 @@ public class MainLoop extends AnimationTimer {
                     " Sim End Time " + caseRec.simEndTime);
             System.out.println("Queue size " +  caseRec.carQueue.size());
             CarRecord cr;
-            //found the bug sereg. i'm an idiot. queue size decreases as elements are removed. first thought the initial size would be somehow stored
             int size = caseRec.carQueue.size();
             for (int j = 0; j < size; j++) {
-                System.out.println(caseRec.carQueue.size());
                 cr = caseRec.carQueue.poll();
                 System.out.println("s " + cr.startIntersection +
                         " e " + cr.endIntersection +

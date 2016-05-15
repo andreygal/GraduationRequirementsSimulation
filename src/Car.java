@@ -78,6 +78,7 @@ public class Car implements Runnable {
     }
 
     private void enterIntersection() throws InterruptedException {
+        System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
         double timeToLane = Math.floor(prevTime + 5) - prevTime;

@@ -142,7 +142,8 @@ public class MainLoop extends AnimationTimer {
 
         //draw the cars
         for (Car car : cars) {
-            car.render(gc);
+            if (car.isMoving())
+                 car.render(gc);
         }
 
 

@@ -55,7 +55,8 @@ public class Car implements Runnable {
         //set the starting position to be at a given intersection
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
-        exitTime = MainLoop.globalTime + Math.abs();
+        exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
+        if (exitTime < 0 ) exitTime += numOfIntersections;
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);

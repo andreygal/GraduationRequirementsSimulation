@@ -100,7 +100,20 @@ public class Car implements Runnable {
     
      private void leaveCircle() {
         System.out.println("Car leaving the circle");
-        
+        double prevTime = MainLoop.globalTime;
+        double startTime = MainLoop.globalTime;
+        double timeToInter = Math.abs(Math.floor(prevTime + MainLoop.enterInterTimeOffset) - prevTime);
+        double radElongRate = (startStopRadius - radius) / timeToInter;
+
+        double currRadius = startStopRadius;
+        while(MainLoop.globalTime - startTime < timeToLane) {
+                currRadius += (radElongRate * (MainLoop.globalTime - prevTime));
+                //calculate new position based on reduced radius
+                positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
+                positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
+                prevTime = MainLoop.globalTime;
+                Thread.sleep(20);
+        }
     }
 
     public void render(GraphicsContext gc) {

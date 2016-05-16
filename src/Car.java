@@ -95,7 +95,7 @@ public class Car implements Runnable {
                 prevTime = MainLoop.globalTime;
                 Thread.sleep(20);
         }
-        moving = true;
+        
     }
     
      private void leaveCircle() {
@@ -114,6 +114,7 @@ public class Car implements Runnable {
                 prevTime = MainLoop.globalTime;
                 Thread.sleep(20);
         }
+        moving = false;
     }
 
     public void render(GraphicsContext gc) {
@@ -127,10 +128,12 @@ public class Car implements Runnable {
     public boolean intersects(Car anotherCar) {
         return anotherCar.getBoundary().intersects(this.getBoundary());
     }
+    
+    public boolean isMoving() { return moving; }
 
     @Override
     public void run() {
-        moving = false;
+        moving = true;
         long updateStartTime = System.currentTimeMillis();
         long elapsedTime = 0;
 

@@ -158,6 +158,9 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars) {
             car.stopCar();
         }
+        cars.removeAll(); 
+        intersectDegree.removeAll();
+        intersectRads.removeAll();
         super.stop();
     }
 

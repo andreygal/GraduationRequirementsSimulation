@@ -161,6 +161,8 @@ public class MainLoop extends AnimationTimer {
         cars.removeAll(); 
         intersectDegree.removeAll();
         intersectRads.removeAll();
+        globalTime = 0.0
+        prevTime = 0; 
         super.stop();
     }
 

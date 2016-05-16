@@ -27,7 +27,7 @@ public class MainLoop extends AnimationTimer {
     //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
-    static double globalTime = 0.0;
+    static double globalTime = -5.0;
     static int    globTimeLimit;
     
     static double outerBound;
@@ -150,7 +150,7 @@ public class MainLoop extends AnimationTimer {
 
         globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
         prevTime = currentNanoTime;
-        pcs.firePropertyChange("globalTime", prevTime, globalTime);
+        if (globalTime > 0) pcs.firePropertyChange("globalTime", prevTime, globalTime);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class MainLoop extends AnimationTimer {
         cars.removeAll(); 
         intersectDegree.removeAll();
         intersectRads.removeAll();
-        globalTime = 0.0
+        globalTime = -5.0
         prevTime = 0; 
         super.stop();
     }

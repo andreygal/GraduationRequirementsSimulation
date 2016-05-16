@@ -23,12 +23,10 @@ public class MainLoop extends AnimationTimer {
     final static double dashedMarkOffset = 28;
     final static double enterInterTimeOffset = 3.0;
 
-    //public double canvasCenterX = Main.canvas.getWidth() / 2.0;
-    //public double canvasCenterY = Main.canvas.getHeight() / 2.0;
 
     static long   prevTime = 0;
     static double globalTime = -5.0;
-    static int    globTimeLimit;
+    static double globTimeLimit;
     
     static double outerBound;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
@@ -54,7 +52,7 @@ public class MainLoop extends AnimationTimer {
          //get the next case and initialize case parameters
         currentCase = Main.cases.get(currCaseIndex);
         currCaseIndex++;
-        globTimeLimit = currentCase.simEndTime;
+        globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset -(globalTime);
         numOfIntersections = currentCase.numOfIntersections;
         numOfCars = currentCase.numOfCars;
         
@@ -67,12 +65,11 @@ public class MainLoop extends AnimationTimer {
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
        
-        /*test car
-        cars.add(new Car (carImage, canvasCenterX - carImage.getWidth() / 2.0,
-                                    canvasCenterY - carImage.getHeight() / 2.0,
-                ISLAND_WIDTH / 2.0 + (dashedMarkOffset / 2.0) * 3 , 1));
+        //test car
+        //cars.add(new Car (carImage, carCounter + 1, 1, 4, 5));
+
         for (Car car : cars)
-            car.startCar();*/
+            car.startCar();
         
         System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
         System.out.println("Size of priority queue " + currentCase.carQueue.size());
@@ -84,13 +81,13 @@ public class MainLoop extends AnimationTimer {
     public void handle(long currentNanoTime) {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
-        while ((currentCase.carQueue.peek() != null) &&
+        if ((currentCase.carQueue.peek() != null) &&
                 //deal with positive glob time cases first
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
-                    CarRecord cr = currentCase.carQueue.poll();
-                    cars.add(new Car(carImage, 1, cr.startIntersection, cr.endIntersection, numOfIntersections));
-                    cars.get(carCounter).startCar();
-                    carCounter++;
+            CarRecord cr = currentCase.carQueue.poll();
+            cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
+            cars.get(carCounter).startCar();
+            carCounter++;
         }
 
         //Dynamically draw the background
@@ -150,7 +147,8 @@ public class MainLoop extends AnimationTimer {
 
         globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
         prevTime = currentNanoTime;
-        if (globalTime > 0) pcs.firePropertyChange("globalTime", prevTime, globalTime);
+        //if (globalTime > 0)
+        pcs.firePropertyChange("globalTime", prevTime, globalTime);
         if (globalTime >= globTimeLimit) this.stop();
     }
 
@@ -159,10 +157,11 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars) {
             car.stopCar();
         }
-        cars.removeAll(); 
-        intersectDegree.removeAll();
-        intersectRads.removeAll();
-        globalTime = -5.0
+        cars.clear();
+        intersectDegree.clear();
+        intersectRads.clear();
+        carCounter = 0;
+        globalTime = -5.0;
         prevTime = 0;
         pcs.firePropertyChange("globalTime", prevTime, globalTime);
         super.stop();

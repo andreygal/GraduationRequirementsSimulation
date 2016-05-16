@@ -16,10 +16,7 @@ import java.util.Scanner;
 
 
 public class Main extends Application {
-    //static int numOfCars = 1;
-    //static int numOfIntersections = 1;
-    //static double arcAngle = 2 * Math.PI / (double) numOfIntersections;
-    //canvas is a square
+    //canvas is square
     final static double canvasSide = 720;
     final static double canvasCenterX = canvasSide / 2.0;
     final static double canvasCenterY = canvasSide / 2.0;

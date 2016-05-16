@@ -15,7 +15,7 @@ public class Car implements Runnable {
     //position is calculated from polar coordinates
     private double positionX;
     private double positionY;
-    private double radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.dashedMarkOffset / 2.0);
+    private double radius;
     //private static double  imageWidth;
     //private static double  imageHeight;
     private static Image carImage;
@@ -47,16 +47,14 @@ public class Car implements Runnable {
         rotCenterY = Main.canvasCenterY - centYoffset;
         //calculate the radius for a given lane
         radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.dashedMarkOffset / 2.0) * lane;
-        //consider removing 
-        //this.imageWidth = carImage.getWidth();
-        //this.imageHeight = carImage.getHeight();
-        //parameters for steering the car onto the lane 
+        //parameters for steering the car onto the lane
         this.startStopRadius = MainLoop.outerBound + 20;
         //set the starting position to be at a given intersection
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
         exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
         if (exitTime < 0 ) exitTime += numOfIntersections;
+        exitTime += MainLoop.enterInterTimeOffset;
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);
@@ -70,13 +68,17 @@ public class Car implements Runnable {
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
         //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
-        positionX = rotCenterX + radius * Math.cos(Math.abs(time) * angularVelocity - offset);
-        positionY = rotCenterY + radius * Math.sin(Math.abs(time) * angularVelocity - offset);
+        positionX = rotCenterX + radius * Math.cos((Math.abs(time)) * angularVelocity - offset);
+        positionY = rotCenterY + radius * Math.sin((Math.abs(time)) * angularVelocity - offset);
         System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
     public void stopCar() {
-        moving = false;
+        try {
+            carThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private void enterCircle() throws InterruptedException {
@@ -106,13 +108,17 @@ public class Car implements Runnable {
         double radElongRate = (startStopRadius - radius) / timeToInter;
 
         double currRadius = startStopRadius;
-        while(MainLoop.globalTime - startTime < timeToLane) {
+        while(MainLoop.globalTime - startTime < timeToInter) {
                 currRadius += (radElongRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius
                 positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
                 positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
                 prevTime = MainLoop.globalTime;
+            try {
                 Thread.sleep(20);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         moving = false;
     }
@@ -143,7 +149,7 @@ public class Car implements Runnable {
             e.printStackTrace();
         }
 
-        while(moving && globalTime <= exitTime) {
+        while(moving && MainLoop.globalTime <= exitTime) {
             if (elapsedTime >= updateIntervalMilli) {
                 update(MainLoop.globalTime);
                 elapsedTime = 0;

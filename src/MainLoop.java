@@ -151,6 +151,7 @@ public class MainLoop extends AnimationTimer {
         globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
         prevTime = currentNanoTime;
         if (globalTime > 0) pcs.firePropertyChange("globalTime", prevTime, globalTime);
+        if (globalTime >= globTimeLimit) this.stop();
     }
 
     @Override
@@ -162,7 +163,8 @@ public class MainLoop extends AnimationTimer {
         intersectDegree.removeAll();
         intersectRads.removeAll();
         globalTime = -5.0
-        prevTime = 0; 
+        prevTime = 0;
+        pcs.firePropertyChange("globalTime", prevTime, globalTime);
         super.stop();
     }
 

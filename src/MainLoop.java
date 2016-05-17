@@ -54,7 +54,7 @@ public class MainLoop extends AnimationTimer {
         currentCase = Main.cases.get(currCaseIndex);
         currCaseIndex++;
         //it starts N seconds earlier and should finish N seconds later to allow time to enter and leave
-        globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset + 2;
+        globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset;
         numOfIntersections = currentCase.numOfIntersections;
         numOfCars = currentCase.numOfCars;
 
@@ -142,7 +142,7 @@ public class MainLoop extends AnimationTimer {
 
 
 
-        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 2.0;
+        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 1.0;
         prevTime = currentNanoTime;
         //if (globalTime > 0)
         pcs.firePropertyChange("globalTime", prevTime, globalTime);

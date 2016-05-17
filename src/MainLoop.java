@@ -91,7 +91,7 @@ public class MainLoop extends AnimationTimer {
                 //deal with positive glob time cases first
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
             CarRecord cr = currentCase.carQueue.poll();
-            cars.add(new Car(carImage, carCounter + 1,  cr.startIntersection, cr.endIntersection, numOfIntersections));
+            cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
             cars.get(carCounter).startCar();
             carCounter++;
         }

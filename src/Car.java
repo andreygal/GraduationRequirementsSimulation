@@ -74,7 +74,7 @@ public class Car implements Runnable {
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
         //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
-        //better to use relative positioning -> dTheta/dt than absolute positioning using x,y
+        //better to use relative positioning -> dTheta/dt than absolute positioning
         prevTime = MainLoop.globalTime;
         try {
             Thread.sleep(1);
@@ -171,6 +171,6 @@ public class Car implements Runnable {
             //System.out.println("Position " + positionX + ", " + positionY);
         }
         //leave the traffic circle
-        //leaveCircle();
+        leaveCircle();
     }
 }

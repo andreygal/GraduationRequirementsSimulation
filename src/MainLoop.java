@@ -128,7 +128,7 @@ public class MainLoop extends AnimationTimer {
         gc.setLineDashes(12f);
         for (int i = 1; i <= numOfCars; i++) {
             trackRadiusOfCurv = (ISLAND_WIDTH / 2.0) + laneWidth * i;
-            System.out.println("Drawing lanes.");
+            //System.out.println("Drawing lanes.");
             gc.strokeOval(Main.canvasCenterX - trackRadiusOfCurv,
                     Main.canvasCenterY - trackRadiusOfCurv,
                     trackRadiusOfCurv * 2, trackRadiusOfCurv * 2);

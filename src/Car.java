@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public class Car implements Runnable {
 
     //angular velocity in rads/s
-    private static double  angularVelocity;
+    private double  angularVelocity;
     private static int numOfIntersections;
     //axis is shifted to correctly render the position of a car due to image's rotation point being the upper left corner
     private static double  rotCenterX;

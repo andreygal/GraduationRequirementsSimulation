@@ -74,7 +74,12 @@ public class Car implements Runnable {
         //positionY = positionY + Math.sin((Math.abs(time)) * angularVelocity);
         positionX = rotCenterX + radius * Math.cos((Math.abs(time)) * angularVelocity - offset);
         positionY = rotCenterY + radius * Math.sin((Math.abs(time)) * angularVelocity - offset);
-        System.out.println("Updating position x " + positionX + " y " + positionY);
+        try {
+            Thread.sleep(0, 20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
     public void stopCar() {

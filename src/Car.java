@@ -50,7 +50,7 @@ public class Car implements Runnable {
         rotCenterX = Main.canvasCenterX - centXoffset;
         rotCenterY = Main.canvasCenterY - centYoffset;
         //calculate the radius for a given lane
-        radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.dashedMarkOffset * (0.5 + lane));
+        radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.laneWidth * (0.5 + lane));
         //parameters for steering the car onto the lane
         this.startStopRadius = MainLoop.outerBound + 20;
         //set the starting position to be at a given intersection

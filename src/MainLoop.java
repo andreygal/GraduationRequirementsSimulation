@@ -15,8 +15,9 @@ public class MainLoop extends AnimationTimer {
     ArrayList<Double> intersectDegree;
     static ArrayList<Double> intersectRads;
     //Graphics
-    Image carImage;
-    GraphicsContext gc;
+    public Image carImage;
+    public Image backgroundImg;
+    public GraphicsContext gc;
 
     final static double ISLAND_WIDTH  = 40;
     final static double ISLAND_HEIGHT = 40;
@@ -26,7 +27,7 @@ public class MainLoop extends AnimationTimer {
 
     //we are starting at a negative time to allow the cars to move to their starting positions
     static long   prevTime = 0;
-    static double globalTime = - 5.0;
+    static double globalTime = - 4.0;
     static double globTimeLimit;
     //the outer bound of the traffic circle
     static double outerBound;
@@ -40,6 +41,7 @@ public class MainLoop extends AnimationTimer {
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
+
         cars = new ArrayList<>();
         intersectDegree = new ArrayList<>();
         intersectRads = new ArrayList<>();
@@ -144,7 +146,7 @@ public class MainLoop extends AnimationTimer {
 
         globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 1.0;
         prevTime = currentNanoTime;
-        //if (globalTime > 0)
+        if (globalTime > 0)
         pcs.firePropertyChange("globalTime", prevTime, globalTime);
         if (globalTime >= globTimeLimit) {
             System.out.println("Time limit reached. Stopping simulation");

@@ -74,11 +74,8 @@ public class Car implements Runnable {
         //positionY = positionY + Math.sin((Math.abs(time)) * angularVelocity);
         positionX = rotCenterX + radius * Math.cos((Math.abs(time)) * angularVelocity - offset);
         positionY = rotCenterY + radius * Math.sin((Math.abs(time)) * angularVelocity - offset);
-        try {
-            Thread.sleep(0, 20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //Thread needs to yield to handle() for proper rendering.
+        Thread.yield();
         //System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
@@ -86,7 +83,7 @@ public class Car implements Runnable {
         moving = false;
     }
 
-    private void enterCircle() throws InterruptedException {
+    private void enterCircle() {
         System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
@@ -101,7 +98,7 @@ public class Car implements Runnable {
                 positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
                 positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
                 prevTime = MainLoop.globalTime;
-                Thread.sleep(20);
+                Thread.yield();
         }
         moving = true;
     }
@@ -120,11 +117,7 @@ public class Car implements Runnable {
                 positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
                 positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
                 prevTime = MainLoop.globalTime;
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                Thread.yield();
         }
         moving = false;
     }
@@ -149,11 +142,7 @@ public class Car implements Runnable {
         long updateStartTime = System.currentTimeMillis();
         long elapsedTime = 0;
 
-        try {
-            enterCircle();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        enterCircle();
 
         while(moving && (MainLoop.globalTime <= exitTime)) {
             if (elapsedTime >= updateIntervalMilli) {

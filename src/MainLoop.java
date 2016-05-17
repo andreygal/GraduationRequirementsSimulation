@@ -21,14 +21,14 @@ public class MainLoop extends AnimationTimer {
     final static double ISLAND_WIDTH  = 40;
     final static double ISLAND_HEIGHT = 40;
     //check the carImage dimension for setting the proper offset
-    final static double dashedMarkOffset = 28;
+    final static double laneWidth = 28;
     final static double enterInterTimeOffset = 3.0;
 
-
+    //we are starting at a negative time to allow the cars to move to their starting positions
     static long   prevTime = 0;
     static double globalTime = - 5.0;
     static double globTimeLimit;
-    
+    //the outer bound of the traffic circle
     static double outerBound;
     PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     
@@ -63,7 +63,7 @@ public class MainLoop extends AnimationTimer {
         numOfCars = currentCase.numOfCars;
 
         //calculate the radial limit of the traffic circle
-        outerBound = (numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
+        outerBound = (numOfCars + 1) * laneWidth + ISLAND_WIDTH / 2;
 
         //initialize degree offset arrays
         for (int i = 0; i < numOfIntersections; i++) {
@@ -117,9 +117,9 @@ public class MainLoop extends AnimationTimer {
                     rectRotate.getMyy(),
                     rectRotate.getTx(),
                     rectRotate.getTy());
-            gc.fillRect(Main.canvasCenterX - dashedMarkOffset / 2.0,
+            gc.fillRect(Main.canvasCenterX - laneWidth / 2.0,
                         Main.canvasCenterY - outerBound - 40,
-                             dashedMarkOffset,
+                             laneWidth,
                              outerBound + 40);
             gc.strokeText(String.valueOf(i), Main.canvasCenterX, Main.canvasCenterY - outerBound - 50);
             gc.restore();
@@ -135,7 +135,7 @@ public class MainLoop extends AnimationTimer {
         gc.setStroke(Color.WHITE);
         gc.setLineDashes(12f);
         for (int i = 1; i <= numOfCars; i++) {
-            trackRadiusOfCurv = (ISLAND_WIDTH / 2.0) + dashedMarkOffset * i;
+            trackRadiusOfCurv = (ISLAND_WIDTH / 2.0) + laneWidth * i;
             System.out.println("Drawing lanes.");
             gc.strokeOval(Main.canvasCenterX - trackRadiusOfCurv,
                     Main.canvasCenterY - trackRadiusOfCurv,

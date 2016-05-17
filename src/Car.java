@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -104,7 +103,7 @@ public class Car implements Runnable {
         double radReductionRate = (startStopRadius - radius) / timeToLane;
 
         double currRadius = startStopRadius;
-        //we care about absolute differences in time since the radial reduction started
+        //we care only care about delata t after starting the while loop 
         while(Math.abs(MainLoop.globalTime - startTime) < timeToLane) {
                 currRadius -= (radReductionRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius

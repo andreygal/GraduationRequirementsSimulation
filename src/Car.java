@@ -52,6 +52,7 @@ public class Car implements Runnable {
         //set the starting position to be at a given intersection
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
+        //calculate time when the car will exit the circle
         exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
         if (exitTime < 0 ) exitTime += numOfIntersections;
         exitTime += MainLoop.enterInterTimeOffset;
@@ -68,17 +69,16 @@ public class Car implements Runnable {
     public void update(double time) {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
         //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
+        //better to use relative positioning -> dTheta/dt than absolute positioning using x,y
+        //positionX = positionX + Math.cos((Math.abs(time)) * angularVelocity);
+        //positionY = positionY + Math.sin((Math.abs(time)) * angularVelocity);
         positionX = rotCenterX + radius * Math.cos((Math.abs(time)) * angularVelocity - offset);
         positionY = rotCenterY + radius * Math.sin((Math.abs(time)) * angularVelocity - offset);
         System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
     public void stopCar() {
-        try {
-            carThread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        moving = false;
     }
 
     private void enterCircle() throws InterruptedException {
@@ -89,7 +89,8 @@ public class Car implements Runnable {
         double radReductionRate = (startStopRadius - radius) / timeToLane;
 
         double currRadius = startStopRadius;
-        while(MainLoop.globalTime - startTime < timeToLane) {
+        //we care about absolute differences in time since the radial reduction started
+        while(Math.abs(MainLoop.globalTime - startTime) < timeToLane) {
                 currRadius -= (radReductionRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius
                 positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
@@ -97,7 +98,7 @@ public class Car implements Runnable {
                 prevTime = MainLoop.globalTime;
                 Thread.sleep(20);
         }
-        
+        moving = true;
     }
     
      private void leaveCircle() {
@@ -149,7 +150,7 @@ public class Car implements Runnable {
             e.printStackTrace();
         }
 
-        while(moving && MainLoop.globalTime <= exitTime) {
+        while(moving && (MainLoop.globalTime <= exitTime)) {
             if (elapsedTime >= updateIntervalMilli) {
                 update(MainLoop.globalTime);
                 elapsedTime = 0;

@@ -20,12 +20,13 @@ public class MainLoop extends AnimationTimer {
 
     final static double ISLAND_WIDTH  = 40;
     final static double ISLAND_HEIGHT = 40;
+    //check the carImage dimension for setting the proper offset
     final static double dashedMarkOffset = 28;
     final static double enterInterTimeOffset = 3.0;
 
 
     static long   prevTime = 0;
-    static double globalTime = -5.0;
+    static double globalTime = - 5.0;
     static double globTimeLimit;
     
     static double outerBound;
@@ -48,32 +49,37 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void start() {
         prevTime = System.nanoTime();
-         
+        //test case
+//        numOfIntersections = 5;
+//        numOfCars = 2;
+//        globTimeLimit = 11.0;
+
          //get the next case and initialize case parameters
         currentCase = Main.cases.get(currCaseIndex);
         currCaseIndex++;
-        globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset -(globalTime);
+        //it starst N seconds earlier and should finish N seconds later to allow time to enter and leave
+        globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset + 1;
         numOfIntersections = currentCase.numOfIntersections;
         numOfCars = currentCase.numOfCars;
-        
-        //calculate the radial limit of the traffic circle 
+
+        //calculate the radial limit of the traffic circle
         outerBound = (numOfCars + 1) * dashedMarkOffset + ISLAND_WIDTH / 2;
-        
+
         //initialize degree offset arrays
         for (int i = 0; i < numOfIntersections; i++) {
             intersectDegree.add(90.0 + (360.0 / numOfIntersections) * i);
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
-       
-        //test car
-        //cars.add(new Car (carImage, carCounter + 1, 1, 4, 5));
+        //test case cont.
+        //cars.add(new Car (carImage, carCounter + 1, 1, 5, numOfIntersections));
+        //cars.add(new Car (carImage, carCounter + 2, 2, 3, numOfIntersections));
 
         for (Car car : cars)
             car.startCar();
         
-        System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
-        System.out.println("Size of priority queue " + currentCase.carQueue.size());
-        //test();
+        // System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
+        //  System.out.println("Size of priority queue " + currentCase.carQueue.size());
+        //test(); //test the input data
         super.start();
     }
 
@@ -85,7 +91,7 @@ public class MainLoop extends AnimationTimer {
                 //deal with positive glob time cases first
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
             CarRecord cr = currentCase.carQueue.poll();
-            cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
+            cars.add(new Car(carImage, carCounter + 1,  cr.startIntersection, cr.endIntersection, numOfIntersections));
             cars.get(carCounter).startCar();
             carCounter++;
         }
@@ -97,7 +103,6 @@ public class MainLoop extends AnimationTimer {
 
         //Draw the asphalt
         gc.setFill(Color.BLACK);
-
         gc.fillOval(Main.canvasCenterX - outerBound, Main.canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 

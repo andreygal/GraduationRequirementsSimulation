@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -30,6 +31,10 @@ public class Car implements Runnable {
     static double arcAngle = 2 * Math.PI / (double) numOfIntersections;
     private double updateInterval = (updateArc / arcAngle);
     private long updateIntervalMilli = (long)(updateInterval * 1000.0);
+
+    double currAngle;
+    double prevTime;
+    double newTime;
 
     boolean moving;
     Thread carThread;
@@ -70,13 +75,22 @@ public class Car implements Runnable {
         double offset = MainLoop.intersectRads.get(startIntersection - 1);
         //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
         //better to use relative positioning -> dTheta/dt than absolute positioning using x,y
-        //positionX = positionX + Math.cos((Math.abs(time)) * angularVelocity);
-        //positionY = positionY + Math.sin((Math.abs(time)) * angularVelocity);
-        positionX = rotCenterX + radius * Math.cos((Math.abs(time)) * angularVelocity - offset);
-        positionY = rotCenterY + radius * Math.sin((Math.abs(time)) * angularVelocity - offset);
+        prevTime = MainLoop.globalTime;
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        newTime = MainLoop.globalTime;
+        currAngle = (currAngle + ((newTime - prevTime) * angularVelocity)) % (2 * Math.PI);
+        positionX = rotCenterX + radius * Math.cos(currAngle);
+        positionY = rotCenterY + radius * Math.sin(currAngle);
+
+        //positionX = rotCenterX + radius * Math.cos((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
+        //positionY = rotCenterY + radius * Math.sin((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
         //Thread needs to yield to handle() for proper rendering.
+        System.out.println("Updating position x " + positionX + " y " + positionY);
         Thread.yield();
-        //System.out.println("Updating position x " + positionX + " y " + positionY);
     }
 
     public void stopCar() {
@@ -101,6 +115,7 @@ public class Car implements Runnable {
                 Thread.yield();
         }
         moving = true;
+        currAngle =  MainLoop.intersectRads.get(startIntersection - 1);
     }
     
      private void leaveCircle() {
@@ -114,8 +129,8 @@ public class Car implements Runnable {
         while(MainLoop.globalTime - startTime < timeToInter) {
                 currRadius += (radElongRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius
-                positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
-                positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
+                positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(endIntersection - 1));
+                positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(endIntersection - 1));
                 prevTime = MainLoop.globalTime;
                 Thread.yield();
         }
@@ -156,6 +171,6 @@ public class Car implements Runnable {
             //System.out.println("Position " + positionX + ", " + positionY);
         }
         //leave the traffic circle
-        leaveCircle();
+        //leaveCircle();
     }
 }

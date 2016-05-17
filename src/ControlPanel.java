@@ -38,8 +38,8 @@ public class ControlPanel implements Initializable {
     @Override // This method is called by the FXMLLoader when initialization is complete
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                new FileChooser.ExtensionFilter("Google Input Files", "*.in"));
+                new FileChooser.ExtensionFilter("Google Input Files", "*.in"),
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"));
         //Initialize button controls
         assert OpenBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file";
         OpenBtn.setOnAction(ae -> {

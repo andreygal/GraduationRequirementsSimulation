@@ -98,29 +98,7 @@ public class MainLoop extends AnimationTimer {
         gc.fillOval(Main.canvasCenterX - outerBound, Main.canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
 
-        //Draw the intersections
-        gc.setFill(Color.BLACK);
-        for (int i = 1; i <= numOfIntersections; i++) {
-            gc.save();
-            Rotate rectRotate = new Rotate(-intersectDegree.get(i - 1) + 90, Main.canvasCenterX, Main.canvasCenterY);
-            gc.setTransform(rectRotate.getMxx(),
-                    rectRotate.getMyx(),
-                    rectRotate.getMxy(),
-                    rectRotate.getMyy(),
-                    rectRotate.getTx(),
-                    rectRotate.getTy());
-            gc.fillRect(Main.canvasCenterX - laneWidth / 2.0,
-                        Main.canvasCenterY - outerBound - 40,
-                             laneWidth,
-                             outerBound + 40);
-            gc.strokeText(String.valueOf(i), Main.canvasCenterX, Main.canvasCenterY - outerBound - 50);
-            gc.restore();
-        }
 
-        //draw the traffic circle island
-        gc.setFill(Color.GRAY);
-        gc.fillOval(Main.canvasCenterX - ISLAND_WIDTH/2,
-                Main.canvasCenterY - ISLAND_HEIGHT/2, ISLAND_WIDTH, ISLAND_HEIGHT);
 
         //Draw the lanes
         double trackRadiusOfCurv;
@@ -133,7 +111,29 @@ public class MainLoop extends AnimationTimer {
                     Main.canvasCenterY - trackRadiusOfCurv,
                     trackRadiusOfCurv * 2, trackRadiusOfCurv * 2);
         }
+        //Draw the intersections
+        gc.setFill(Color.BLACK);
+        for (int i = 1; i <= numOfIntersections; i++) {
+            gc.save();
+            Rotate rectRotate = new Rotate(-intersectDegree.get(i - 1) + 90, Main.canvasCenterX, Main.canvasCenterY);
+            gc.setTransform(rectRotate.getMxx(),
+                    rectRotate.getMyx(),
+                    rectRotate.getMxy(),
+                    rectRotate.getMyy(),
+                    rectRotate.getTx(),
+                    rectRotate.getTy());
+            gc.fillRect(Main.canvasCenterX - laneWidth / 2.0,
+                    Main.canvasCenterY - outerBound - 40,
+                    laneWidth,
+                    outerBound + 40);
+            gc.strokeText(String.valueOf(i), Main.canvasCenterX, Main.canvasCenterY - outerBound - 50);
+            gc.restore();
+        }
 
+        //draw the traffic circle island
+        gc.setFill(Color.GRAY);
+        gc.fillOval(Main.canvasCenterX - ISLAND_WIDTH/2,
+                Main.canvasCenterY - ISLAND_HEIGHT/2, ISLAND_WIDTH, ISLAND_HEIGHT);
         //draw the cars
         for (Car car : cars) {
             if (car.isMoving())
@@ -142,7 +142,7 @@ public class MainLoop extends AnimationTimer {
 
 
 
-        globalTime += ((currentNanoTime - prevTime) / 1000000000.0);
+        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 2.0;
         prevTime = currentNanoTime;
         //if (globalTime > 0)
         pcs.firePropertyChange("globalTime", prevTime, globalTime);

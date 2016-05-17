@@ -6,7 +6,6 @@ public class Car implements Runnable {
 
     //angular velocity in rads/s
     private double  angularVelocity;
-    private static int numOfIntersections;
     //axis is shifted to correctly render the position of a car due to image's rotation point being the upper left corner
     private static double  rotCenterX;
     private static double  rotCenterY;
@@ -24,19 +23,18 @@ public class Car implements Runnable {
     private int endIntersection;
     private double exitTime;
 
-    double currAngle;
-    double prevTime;
-    double newTime;
+    private double currAngle;
+    private double prevTime;
+    private double newTime;
 
-    boolean moving;
-    Thread carThread;
+    private boolean moving;
+    private Thread carThread;
 
     public Car(Image carImage, int lane, int startIntersection, int endIntersection, int numOfIntersections) {
         //initialize passed parameters
         this.carImage = carImage;
         this.startIntersection = startIntersection;
         this.endIntersection = endIntersection;
-        this.numOfIntersections = numOfIntersections;
 
         //calculate offset for the axis of rotation
         centXoffset = this.carImage.getWidth() / 2.0;
@@ -57,10 +55,10 @@ public class Car implements Runnable {
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
 
         //calculate time when the car will exit the circle
-        exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
-        if (exitTime < 0 ) exitTime += numOfIntersections;
-        exitTime += MainLoop.enterInterTimeOffset;
+        this.exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
 
+        this.exitTime += MainLoop.enterInterTimeOffset;
+        if (exitTime < 0 ) exitTime += numOfIntersections;
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -((2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);
@@ -115,7 +113,6 @@ public class Car implements Runnable {
                 prevTime = MainLoop.globalTime;
                 Thread.yield();
         }
-        moving = true;
         currAngle =  MainLoop.intersectRads.get(startIntersection - 1);
     }
     
@@ -160,6 +157,7 @@ public class Car implements Runnable {
 
         while(moving && (MainLoop.globalTime <= exitTime)) {
                 update();
+                Thread.yield();
             //System.out.println("Inside car run: updating car position");
         }
         //leave the traffic circle

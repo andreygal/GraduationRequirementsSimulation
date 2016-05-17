@@ -39,27 +39,35 @@ public class Car implements Runnable {
     Thread carThread;
 
     public Car(Image carImage, int lane, int startIntersection, int endIntersection, int numOfIntersections) {
+        //initialize passed parameters
         this.carImage = carImage;
         this.startIntersection = startIntersection;
         this.endIntersection = endIntersection;
         this.numOfIntersections = numOfIntersections;
+
         //calculate offset for the axis of rotation
         centXoffset = this.carImage.getWidth() / 2.0;
         centYoffset = this.carImage.getHeight() / 2.0;
+
         //set axis of rotation
         rotCenterX = Main.canvasCenterX - centXoffset;
         rotCenterY = Main.canvasCenterY - centYoffset;
+
         //calculate the radius for a given lane
         radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.laneWidth * (0.5 + lane));
+
         //parameters for steering the car onto the lane
         this.startStopRadius = MainLoop.outerBound + 20;
+
         //set the starting position to be at a given intersection
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
+
         //calculate time when the car will exit the circle
         exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
         if (exitTime < 0 ) exitTime += numOfIntersections;
         exitTime += MainLoop.enterInterTimeOffset;
+
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -( (2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);

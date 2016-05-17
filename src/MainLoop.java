@@ -49,10 +49,6 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void start() {
         prevTime = System.nanoTime();
-        //test case
-//        numOfIntersections = 5;
-//        numOfCars = 2;
-//        globTimeLimit = 11.0;
 
          //get the next case and initialize case parameters
         currentCase = Main.cases.get(currCaseIndex);
@@ -65,20 +61,17 @@ public class MainLoop extends AnimationTimer {
         //calculate the radial limit of the traffic circle
         outerBound = (numOfCars + 1) * laneWidth + ISLAND_WIDTH / 2;
 
-        //initialize degree offset arrays
+        //initialize degree offset arrays that are used for calculating starting positions
         for (int i = 0; i < numOfIntersections; i++) {
             intersectDegree.add(90.0 + (360.0 / numOfIntersections) * i);
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
-        //test case cont.
-        //cars.add(new Car (carImage, carCounter + 1, 1, 5, numOfIntersections));
-        //cars.add(new Car (carImage, carCounter + 2, 2, 3, numOfIntersections));
-
+        //start individual car threads
         for (Car car : cars)
             car.startCar();
         
-        // System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
-        //  System.out.println("Size of priority queue " + currentCase.carQueue.size());
+        //System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
+        //System.out.println("Size of priority queue " + currentCase.carQueue.size());
         //test(); //test the input data
         super.start();
     }
@@ -88,7 +81,6 @@ public class MainLoop extends AnimationTimer {
         System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
         if ((currentCase.carQueue.peek() != null) &&
-                //deal with positive glob time cases first
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
             CarRecord cr = currentCase.carQueue.poll();
             cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
@@ -97,7 +89,7 @@ public class MainLoop extends AnimationTimer {
         }
 
         //Dynamically draw the background
-        //Draw the grass
+        //Draw the grass. Add a grass texture fill in the production version.
         gc.setFill(Color.GREEN);
         gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
 
@@ -165,10 +157,10 @@ public class MainLoop extends AnimationTimer {
         for (Car car : cars) {
             car.stopCar();
         }
-        cars.clear();
         intersectDegree.clear();
         intersectRads.clear();
         carCounter = 0;
+        cars.clear();
         globalTime = -5.0;
         prevTime = 0;
         pcs.firePropertyChange("globalTime", prevTime, globalTime);

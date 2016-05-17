@@ -57,7 +57,7 @@ public class MainLoop extends AnimationTimer {
          //get the next case and initialize case parameters
         currentCase = Main.cases.get(currCaseIndex);
         currCaseIndex++;
-        //it starst N seconds earlier and should finish N seconds later to allow time to enter and leave
+        //it starts N seconds earlier and should finish N seconds later to allow time to enter and leave
         globTimeLimit = (double) currentCase.simEndTime + enterInterTimeOffset + 1;
         numOfIntersections = currentCase.numOfIntersections;
         numOfCars = currentCase.numOfCars;
@@ -154,7 +154,10 @@ public class MainLoop extends AnimationTimer {
         prevTime = currentNanoTime;
         //if (globalTime > 0)
         pcs.firePropertyChange("globalTime", prevTime, globalTime);
-        if (globalTime >= globTimeLimit) this.stop();
+        if (globalTime >= globTimeLimit) {
+            System.out.println("Time limit reached. Stopping simulation");
+            this.stop();
+        }
     }
 
     @Override
@@ -199,5 +202,15 @@ public class MainLoop extends AnimationTimer {
         }
     }
 
+    public int getNumCar() {
+        return currentCase.carQueue.size();
+    }
 
+    public int getCurrCaseIndex() {
+       return currCaseIndex;
+    }
+
+    public int getAlotTime() {
+        return currentCase.simEndTime;
+    }
 }

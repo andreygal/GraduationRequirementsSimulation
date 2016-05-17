@@ -49,7 +49,12 @@ public class ControlPanel implements Initializable {
             this.pcs.firePropertyChange("inputFile", oldFile, inputFile);
         });
         assert StartBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file.";
-        StartBtn.setOnAction(ae -> Main.mainLoop.start());
+        StartBtn.setOnAction(ae -> {
+            Main.mainLoop.start();
+            setStatusLabel(Main.mainLoop.getCurrCaseIndex(),
+                           Main.mainLoop.getNumCar(),
+                           Main.mainLoop.getAlotTime());
+        });
         assert StopBtn != null : "fx:id=\"StopBtn\" was not injected: check your FXML file.";
         StopBtn.setOnAction(ae -> Main.mainLoop.stop());
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
@@ -61,6 +66,11 @@ public class ControlPanel implements Initializable {
 
     public void setGlobalTime(double globalTime) {
         TimeLabel.setText("GlobalTime: " + formatter.format(globalTime));
+    }
+
+    public void setStatusLabel(int caseNum, int numOfCars, int allottedTime) {
+        StatusLabel.setText("Case Number: " + caseNum + "\nNumber of Cars: " + numOfCars
+                             + "\nAllotted Time: " + allottedTime);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {

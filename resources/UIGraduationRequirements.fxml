@@ -13,7 +13,7 @@
             <Font size="22.0" />
          </font>
       </Text>
-      <Label id="StatusLabel" fx:id="StatusLabel" text="Select a simulation case file." />
+      <Label id="StatusLabel" fx:id="StatusLabel" lineSpacing="2.0" text="Select a simulation case file." />
       <Button id="OpenBtn" fx:id="OpenBtn" mnemonicParsing="false" prefWidth="120.0" text="Open File" />
       <Button id="StartBtn" fx:id="StartBtn" alignment="CENTER" mnemonicParsing="false" prefWidth="120.0" text="Start Case" VBox.vgrow="ALWAYS">
          <font>

@@ -71,8 +71,7 @@ public class Car implements Runnable {
         carThread.start();
     }
 
-    public void update(double time) {
-        double offset = MainLoop.intersectRads.get(startIntersection - 1);
+    public void update() {
         //interserctRads array stores negative angles as canvas uses clockwise rotation as positive
         //better to use relative positioning -> dTheta/dt than absolute positioning
         prevTime = MainLoop.globalTime;
@@ -89,7 +88,7 @@ public class Car implements Runnable {
         //positionX = rotCenterX + radius * Math.cos((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
         //positionY = rotCenterY + radius * Math.sin((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
         //Thread needs to yield to handle() for proper rendering.
-        System.out.println("Updating position x " + positionX + " y " + positionY);
+        //System.out.println("Updating position x " + positionX + " y " + positionY);
         Thread.yield();
     }
 
@@ -161,7 +160,7 @@ public class Car implements Runnable {
 
         while(moving && (MainLoop.globalTime <= exitTime)) {
             if (elapsedTime >= updateIntervalMilli) {
-                update(MainLoop.globalTime);
+                update();
                 elapsedTime = 0;
                 updateStartTime = System.currentTimeMillis();
             }

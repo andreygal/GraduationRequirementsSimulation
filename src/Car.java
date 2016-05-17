@@ -23,13 +23,6 @@ public class Car implements Runnable {
     private int startIntersection;
     private int endIntersection;
     private double exitTime;
-    //update arc is the subtended arc after which update is called.
-    //we want to update the image every 2 pixels
-    private double updateArc      =  2.0 / radius;
-    //interval is in seconds
-    static double arcAngle = 2 * Math.PI / (double) numOfIntersections;
-    private double updateInterval = (updateArc / arcAngle);
-    private long updateIntervalMilli = (long)(updateInterval * 1000.0);
 
     double currAngle;
     double prevTime;
@@ -56,7 +49,7 @@ public class Car implements Runnable {
         //calculate the radius for a given lane
         radius = MainLoop.ISLAND_WIDTH / 2.0 + (MainLoop.laneWidth * (0.5 + lane));
 
-        //parameters for steering the car onto the lane
+        //parameter used for steering the car onto the lane
         this.startStopRadius = MainLoop.outerBound + 20;
 
         //set the starting position to be at a given intersection
@@ -69,7 +62,7 @@ public class Car implements Runnable {
         exitTime += MainLoop.enterInterTimeOffset;
 
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
-        this.angularVelocity = -( (2 * Math.PI) / ((double) numOfIntersections));
+        this.angularVelocity = -((2 * Math.PI) / ((double) numOfIntersections));
         carThread = new Thread(this);
     }
 
@@ -107,14 +100,16 @@ public class Car implements Runnable {
         System.out.println("Car approaching lane");
         double prevTime = MainLoop.globalTime;
         double startTime = MainLoop.globalTime;
+        //car has to start moving in a circle at an integer time in accordance with the problem statement
         double timeToLane = Math.abs(Math.floor(prevTime + MainLoop.enterInterTimeOffset) - prevTime);
         double radReductionRate = (startStopRadius - radius) / timeToLane;
-
         double currRadius = startStopRadius;
-        //we care only care about delata t after starting the while loop 
+
+        //after starting the while loop we only care about delata t
+        //loop calculates elapse time and compares it to time it would take the car to get to its lane
         while(Math.abs(MainLoop.globalTime - startTime) < timeToLane) {
                 currRadius -= (radReductionRate * (MainLoop.globalTime - prevTime));
-                //calculate new position based on reduced radius
+                //convert from polar to cartesian coordinates
                 positionX = rotCenterX + currRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
                 positionY = rotCenterY + currRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
                 prevTime = MainLoop.globalTime;
@@ -160,21 +155,12 @@ public class Car implements Runnable {
     @Override
     public void run() {
         moving = true;
-        long updateStartTime = System.currentTimeMillis();
-        long elapsedTime = 0;
-
+        //enter the traffic circle
         enterCircle();
 
         while(moving && (MainLoop.globalTime <= exitTime)) {
-            if (elapsedTime >= updateIntervalMilli) {
                 update();
-                elapsedTime = 0;
-                updateStartTime = System.currentTimeMillis();
-            }
-
-            elapsedTime = System.currentTimeMillis() - updateStartTime;
             //System.out.println("Inside car run: updating car position");
-            //System.out.println("Position " + positionX + ", " + positionY);
         }
         //leave the traffic circle
         leaveCircle();

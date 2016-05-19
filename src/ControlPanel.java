@@ -1,6 +1,4 @@
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -87,7 +85,7 @@ public class ControlPanel implements Initializable {
 
         DilationSlider.valueProperty().addListener((property, oldValue, newValue) -> {
             Main.mainLoop.setTimeDilation(DilationSlider.getValue());
-            System.out.println("Dilation value is " + DilationSlider.getValue() );
+            //System.out.println("Dilation value is " + DilationSlider.getValue() );
         });
 
         Objects.requireNonNull(DilationSlider).setLabelFormatter(new StringConverter<Double>() {

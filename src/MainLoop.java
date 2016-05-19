@@ -144,7 +144,7 @@ public class MainLoop extends AnimationTimer {
                  car.render(gc);
         }
 
-        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 1.5;
+        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / timeDilation;
         prevTime = currentNanoTime;
         if (globalTime >= 0 && globalTime <= globTimeLimit)
             pcs.firePropertyChange("globalTime", prevTime, globalTime);

@@ -1,4 +1,6 @@
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -43,6 +45,7 @@ public class ControlPanel implements Initializable {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Google Input Files", "*.in"),
                 new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
         //Initialize button controls
         assert OpenBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file";
         OpenBtn.setOnAction(ae -> {
@@ -51,16 +54,18 @@ public class ControlPanel implements Initializable {
             System.out.println("Opening file");
             this.pcs.firePropertyChange("inputFile", oldFile, inputFile);
         });
+
         assert StartBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file.";
         StartBtn.setOnAction(ae -> {
             Main.mainLoop.start();
             StopBtn.setDisable(false);
             StartBtn.setDisable(true);
             setStatusLabel(Main.mainLoop.getCurrCaseIndex(),
-                           Main.mainLoop.getNumCar(),
-                           Main.mainLoop.getAlotTime());
+                    Main.mainLoop.getNumCar(),
+                    Main.mainLoop.getAlotTime());
 
         });
+
         assert StopBtn != null : "fx:id=\"StopBtn\" was not injected: check your FXML file.";
         StopBtn.setDisable(true);
         StopBtn.setOnAction(ae -> {
@@ -68,15 +73,24 @@ public class ControlPanel implements Initializable {
             StartBtn.setDisable(false);
             StopBtn.setDisable(true);
         });
+
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
         QuitBtn.setOnAction(ae -> {
             Main.mainLoop.stop();
             Platform.exit();
         });
+
         assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
         TimeLabel.setText(String.valueOf(MainLoop.globalTime));
 
+        assert DilationSlider != null : "fx:id=\"DilationSlider\" was not injected: check your FXML file.";
+        DilationSlider.valueProperty().addListener((property, oldValue, newValue) -> {
+            Main.mainLoop.setTimeDilation(DilationSlider.getValue());
+            System.out.println("Dilation value is " + DilationSlider.getValue() );
+        });
     }
+
+
 
     public void setGlobalTime(double globalTime) {
         TimeLabel.setText("GlobalTime: " + formatter.format(globalTime));

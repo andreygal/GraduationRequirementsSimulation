@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -16,6 +17,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -83,10 +85,28 @@ public class ControlPanel implements Initializable {
         assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
         TimeLabel.setText(String.valueOf(MainLoop.globalTime));
 
-        assert DilationSlider != null : "fx:id=\"DilationSlider\" was not injected: check your FXML file.";
         DilationSlider.valueProperty().addListener((property, oldValue, newValue) -> {
             Main.mainLoop.setTimeDilation(DilationSlider.getValue());
             System.out.println("Dilation value is " + DilationSlider.getValue() );
+        });
+
+        Objects.requireNonNull(DilationSlider).setLabelFormatter(new StringConverter<Double>() {
+            @Override
+            public String toString(Double value) {
+                String label = "";
+                if (value == 1) {
+                    label = "Real Time";
+                } else if (value == 2) {
+                    label = "x 1/2";
+                } else if (value == 3) {
+                    label = "x 1/3";
+                }
+                return label;
+            }
+            @Override
+            public Double fromString(String string) {
+                return null; // Not used
+            }
         });
     }
 

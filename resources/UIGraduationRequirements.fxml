@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -16,7 +17,10 @@
          </font>
       </Text>
       <Label id="StatusLabel" fx:id="StatusLabel" lineSpacing="2.0" text="Select a simulation case file." />
-      <Button id="OpenBtn" fx:id="OpenBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Open File" />
+      <Button id="OpenBtn" fx:id="OpenBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Open File">
+         <font>
+            <Font size="17.0" />
+         </font></Button>
       <Button id="StartBtn" fx:id="StartBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Start Case" VBox.vgrow="ALWAYS">
          <font>
             <Font size="18.0" />
@@ -32,7 +36,13 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Slider id="DilationSlider" fx:id="DilationSlider" blockIncrement="0.0" majorTickUnit="1.0" max="3.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" />
+      <Slider id="DilationSlider" fx:id="DilationSlider" blockIncrement="0.25" majorTickUnit="1.0" max="3.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true">
+         <padding>
+            <Insets left="20.0" right="20.0" />
+         </padding>
+         <effect>
+            <ColorAdjust brightness="-0.18" contrast="0.17" hue="0.33" saturation="-0.13" />
+         </effect></Slider>
       <Label id="TimeLabel" fx:id="TimeLabel" contentDisplay="CENTER" text="Global Time: ">
          <font>
             <Font size="18.0" />

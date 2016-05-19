@@ -24,8 +24,9 @@ public class Main extends Application {
     static Canvas canvas;
     static MainLoop mainLoop;
     //input management
-    File inputFile;
+    private File inputFile;
     static ArrayList<CaseRecord> cases = new ArrayList<>();
+    static ControlPanel controlPanel;
 
     private void readFile(File inputFile){
         Scanner sc = null;
@@ -66,7 +67,7 @@ public class Main extends Application {
         //Add UI Control Panel (right side) and store a reference to Panel Control
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent UIPanel = fxmlLoader.load(getClass().getResource("UIGraduationRequirements.fxml").openStream());
-            ControlPanel controlPanel = fxmlLoader.getController();
+        controlPanel = fxmlLoader.getController();
 
         //JavaFX setup: setup up Border Pane
         primaryStage.setTitle("Graduation Requirements Simulator");
@@ -92,6 +93,8 @@ public class Main extends Application {
             System.out.println(inputFile.getAbsoluteFile());
 
         });
+
+        controlPanel.setGlobalTime(0);
 
         primaryStage.show();
     }

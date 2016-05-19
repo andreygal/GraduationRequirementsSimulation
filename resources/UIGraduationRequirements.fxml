@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -14,26 +16,33 @@
          </font>
       </Text>
       <Label id="StatusLabel" fx:id="StatusLabel" lineSpacing="2.0" text="Select a simulation case file." />
-      <Button id="OpenBtn" fx:id="OpenBtn" mnemonicParsing="false" prefWidth="120.0" text="Open File" />
-      <Button id="StartBtn" fx:id="StartBtn" alignment="CENTER" mnemonicParsing="false" prefWidth="120.0" text="Start Case" VBox.vgrow="ALWAYS">
+      <Button id="OpenBtn" fx:id="OpenBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Open File" />
+      <Button id="StartBtn" fx:id="StartBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Start Case" VBox.vgrow="ALWAYS">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button id="StopBtn" fx:id="StopBtn" mnemonicParsing="false" prefWidth="120.0" text="Stop">
+      <Button id="StopBtn" fx:id="StopBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Stop">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button id="QuitBtn" fx:id="QuitBtn" mnemonicParsing="false" prefWidth="120.0" text="Quit">
+      <Button id="QuitBtn" fx:id="QuitBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Quit">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
+      <Slider id="DilationSlider" fx:id="DilationSlider" blockIncrement="0.0" majorTickUnit="1.0" max="3.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" />
       <Label id="TimeLabel" fx:id="TimeLabel" contentDisplay="CENTER" text="Global Time: ">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
    </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets top="30.0" />
+   </padding>
 </VBox>

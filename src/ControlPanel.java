@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -29,6 +30,8 @@ public class ControlPanel implements Initializable {
     private Label StatusLabel;
     @FXML
     private Label TimeLabel;
+    @FXML
+    private Slider DilationSlider;
 
     private final DecimalFormat formatter = new DecimalFormat("#.0#####", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
     private final FileChooser fileChooser = new FileChooser();
@@ -51,14 +54,25 @@ public class ControlPanel implements Initializable {
         assert StartBtn != null : "fx:id=\"StartBtn\" was not injected: check your FXML file.";
         StartBtn.setOnAction(ae -> {
             Main.mainLoop.start();
+            StopBtn.setDisable(false);
+            StartBtn.setDisable(true);
             setStatusLabel(Main.mainLoop.getCurrCaseIndex(),
                            Main.mainLoop.getNumCar(),
                            Main.mainLoop.getAlotTime());
+
         });
         assert StopBtn != null : "fx:id=\"StopBtn\" was not injected: check your FXML file.";
-        StopBtn.setOnAction(ae -> Main.mainLoop.stop());
+        StopBtn.setDisable(true);
+        StopBtn.setOnAction(ae -> {
+            Main.mainLoop.stop();
+            StartBtn.setDisable(false);
+            StopBtn.setDisable(true);
+        });
         assert QuitBtn != null : "fx:id=\"QuitBTn\" was not injected: check your FXML file.";
-        QuitBtn.setOnAction(ae -> Platform.exit());
+        QuitBtn.setOnAction(ae -> {
+            Main.mainLoop.stop();
+            Platform.exit();
+        });
         assert TimeLabel != null : "fx:id=\"TimeLabel\" was not injected: check your FXML file.";
         TimeLabel.setText(String.valueOf(MainLoop.globalTime));
 
@@ -73,6 +87,7 @@ public class ControlPanel implements Initializable {
                              + "\nAllotted Time: " + allottedTime);
     }
 
+    public void resetStart() { StartBtn.setDisable(false);}
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         pcs.addPropertyChangeListener(listener);
     }

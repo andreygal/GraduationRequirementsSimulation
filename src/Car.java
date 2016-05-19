@@ -123,7 +123,7 @@ public class Car implements Runnable {
         double timeToInter = Math.abs(Math.floor(prevTime + MainLoop.enterInterTimeOffset) - prevTime);
         double radElongRate = (startStopRadius - radius) / timeToInter;
 
-        double currRadius = startStopRadius;
+        double currRadius = radius;
         while(MainLoop.globalTime - startTime < timeToInter) {
                 currRadius += (radElongRate * (MainLoop.globalTime - prevTime));
                 //calculate new position based on reduced radius

@@ -27,7 +27,7 @@ public class MainLoop extends AnimationTimer {
 
     //we are starting at a negative time to allow the cars to move to their starting positions
     static long   prevTime = 0;
-    static double globalTime = - 4.0;
+    static double globalTime = -4.0;
     static double globTimeLimit;
     //the outer bound of the traffic circle
     static double outerBound;
@@ -38,10 +38,13 @@ public class MainLoop extends AnimationTimer {
     private int numOfIntersections;
     private int numOfCars;
     private int carCounter = 0;
+    private boolean isRunning = false;
+    private double timeDilation = 1;
+
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
-
+        backgroundImg = new Image(getClass().getResourceAsStream("grass_resized_reduced.png"));
         cars = new ArrayList<>();
         intersectDegree = new ArrayList<>();
         intersectRads = new ArrayList<>();
@@ -80,7 +83,7 @@ public class MainLoop extends AnimationTimer {
 
     @Override
     public void handle(long currentNanoTime) {
-        System.out.println(prevTime + " GlobalTime: " + globalTime);
+        //System.out.println(prevTime + " GlobalTime: " + globalTime);
         //peek at the queue and see if the next car is read to enter the traffic circle
         if ((currentCase.carQueue.peek() != null) &&
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
@@ -92,15 +95,14 @@ public class MainLoop extends AnimationTimer {
 
         //Dynamically draw the background
         //Draw the grass. Add a grass texture fill in the production version.
-        gc.setFill(Color.GREEN);
-        gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
+        //gc.setFill(Color.GREEN);
+        //gc.fillRect(0, 0, Main.canvas.getWidth(), Main.canvas.getHeight());
+        gc.drawImage(backgroundImg, 0, 0, Main.canvasSide, Main.canvasSide);
 
         //Draw the asphalt
         gc.setFill(Color.BLACK);
         gc.fillOval(Main.canvasCenterX - outerBound, Main.canvasCenterY - outerBound,
                 outerBound * 2, outerBound * 2);
-
-
 
         //Draw the lanes
         double trackRadiusOfCurv;
@@ -142,12 +144,10 @@ public class MainLoop extends AnimationTimer {
                  car.render(gc);
         }
 
-
-
-        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 1.0;
+        globalTime += ((currentNanoTime - prevTime) / 1000000000.0) / 1.5;
         prevTime = currentNanoTime;
-        if (globalTime > 0)
-        pcs.firePropertyChange("globalTime", prevTime, globalTime);
+        if (globalTime >= 0 && globalTime <= globTimeLimit)
+            pcs.firePropertyChange("globalTime", prevTime, globalTime);
         if (globalTime >= globTimeLimit) {
             System.out.println("Time limit reached. Stopping simulation");
             this.stop();
@@ -163,8 +163,9 @@ public class MainLoop extends AnimationTimer {
         intersectRads.clear();
         carCounter = 0;
         cars.clear();
-        globalTime = -5.0;
+        globalTime = -4.0;
         prevTime = 0;
+        Main.controlPanel.resetStart();
         pcs.firePropertyChange("globalTime", prevTime, globalTime);
         super.stop();
     }
@@ -194,6 +195,13 @@ public class MainLoop extends AnimationTimer {
                         " t " + cr.startTime);
             }
         }
+    }
+
+    public void setTimeDilation(double timeDilation) {
+        if (timeDilation < 1 || timeDilation > 3)
+            return;
+        else
+            this.timeDilation = timeDilation;
     }
 
     public int getNumCar() {

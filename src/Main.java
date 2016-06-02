@@ -47,8 +47,9 @@ public class Main extends Application {
                 int s = sc.nextInt(); //start intersection
                 int e = sc.nextInt(); //end intersection
                 int t = sc.nextInt(); //start time
-                caseRec.carQueue.add(new CarRecord(s, e, t));
+                caseRec.carQueue.add(new CarRecord(s, e, t, false));
             }
+            caseRec.carQueue.add(Solver.solve(caseRec));
             cases.add(caseRec);
         }
 

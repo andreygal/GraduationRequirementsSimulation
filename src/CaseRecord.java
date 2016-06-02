@@ -1,8 +1,5 @@
 import java.util.PriorityQueue;
 
-/**
- * Created by andre on 5/14/2016.
- */
 public class CaseRecord {
     public int caseNum;
     public int numOfCars;

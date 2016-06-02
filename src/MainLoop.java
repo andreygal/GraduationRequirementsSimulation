@@ -16,6 +16,7 @@ public class MainLoop extends AnimationTimer {
     static ArrayList<Double> intersectRads;
     //Graphics
     public Image carImage;
+    public Image myCarImage;
     public Image backgroundImg;
     public GraphicsContext gc;
 
@@ -44,6 +45,7 @@ public class MainLoop extends AnimationTimer {
 
     public MainLoop() {
         carImage = new Image(getClass().getResourceAsStream("car.png"));
+        myCarImage = new Image(getClass().getResourceAsStream("mycar.png"));
         backgroundImg = new Image(getClass().getResourceAsStream("grass_resized_reduced.png"));
         cars = new ArrayList<>();
         intersectDegree = new ArrayList<>();
@@ -71,10 +73,7 @@ public class MainLoop extends AnimationTimer {
             intersectDegree.add(90.0 + (360.0 / numOfIntersections) * i);
             intersectRads.add(-Math.toRadians(intersectDegree.get(i)));
         }
-        //start individual car threads
-        for (Car car : cars)
-            car.startCar();
-        
+
         //System.out.println("Center is at " + Main.canvasCenterX + " " + Main.canvasCenterY);
         //System.out.println("Size of priority queue " + currentCase.carQueue.size());
         //test(); //test the input data
@@ -84,11 +83,16 @@ public class MainLoop extends AnimationTimer {
     @Override
     public void handle(long currentNanoTime) {
         //System.out.println(prevTime + " GlobalTime: " + globalTime);
-        //peek at the queue and see if the next car is read to enter the traffic circle
+        //peek at the queue and see if the next car is ready to enter the traffic circle
         if ((currentCase.carQueue.peek() != null) &&
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
             CarRecord cr = currentCase.carQueue.poll();
-            cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
+
+            Image currImage;
+            if(cr.myCar == false) currImage = carImage;
+            else currImage = myCarImage;
+
+            cars.add(new Car(currImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
             cars.get(carCounter).startCar();
             carCounter++;
         }

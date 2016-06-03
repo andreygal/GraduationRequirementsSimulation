@@ -17,7 +17,7 @@ public class Car implements Runnable {
     private double radius;
     //private static double  imageWidth;
     //private static double  imageHeight;
-    private static Image carImage;
+    private Image carImage;
     private double startStopRadius;
     private int startIntersection;
     private int endIntersection;

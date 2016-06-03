@@ -88,11 +88,15 @@ public class MainLoop extends AnimationTimer {
                 (globalTime + enterInterTimeOffset >= currentCase.carQueue.peek().startTime)) {
             CarRecord cr = currentCase.carQueue.poll();
 
-            Image currImage;
-            if(cr.myCar == false) currImage = carImage;
-            else currImage = myCarImage;
+            if(cr.myCar == true) {
+              cars.add(new Car(myCarImage, carCounter, cr.startIntersection, cr.endIntersection, numOfIntersections, cr.myCar,
+                      cr.travelTime));
+            }
+            else {
+                cars.add(new Car(carImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections, cr.myCar,
+                        cr.travelTime));
+            }
 
-            cars.add(new Car(currImage, carCounter,  cr.startIntersection, cr.endIntersection, numOfIntersections));
             cars.get(carCounter).startCar();
             carCounter++;
         }

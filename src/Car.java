@@ -6,11 +6,10 @@ public class Car implements Runnable {
 
     //angular velocity in rads/s
     private double  angularVelocity;
+    private boolean mycar;
     //axis is shifted to correctly render the position of a car due to image's rotation point being the upper left corner
     private static double  rotCenterX;
     private static double  rotCenterY;
-    private double centXoffset;
-    private double centYoffset;
     //position is calculated from polar coordinates
     private double positionX;
     private double positionY;
@@ -30,15 +29,17 @@ public class Car implements Runnable {
     private boolean moving;
     private Thread carThread;
 
-    public Car(Image carImage, int lane, int startIntersection, int endIntersection, int numOfIntersections) {
+    public Car(Image carImage, int lane, int startIntersection, int endIntersection, int numOfIntersections, boolean mycar,
+               int travelTime) {
         //initialize passed parameters
         this.carImage = carImage;
         this.startIntersection = startIntersection;
         this.endIntersection = endIntersection;
+        this.mycar = mycar;
 
         //calculate offset for the axis of rotation
-        centXoffset = this.carImage.getWidth() / 2.0;
-        centYoffset = this.carImage.getHeight() / 2.0;
+        double centXoffset = this.carImage.getWidth() / 2.0;
+        double centYoffset = this.carImage.getHeight() / 2.0;
 
         //set axis of rotation
         rotCenterX = Main.canvasCenterX - centXoffset;
@@ -54,13 +55,18 @@ public class Car implements Runnable {
         this.positionX = rotCenterX + startStopRadius * Math.cos(MainLoop.intersectRads.get(startIntersection - 1));
         this.positionY = rotCenterY + startStopRadius * Math.sin(MainLoop.intersectRads.get(startIntersection - 1));
 
-        //calculate time when the car will exit the circle
-        this.exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
-
-        this.exitTime += MainLoop.enterInterTimeOffset;
-        if (exitTime < 0 ) exitTime += numOfIntersections;
+        if (mycar == false) {
+            //calculate time when the car will exit the circle
+            this.exitTime = MainLoop.globalTime + (endIntersection - startIntersection);
+            this.exitTime += MainLoop.enterInterTimeOffset;
+            if (exitTime < 0) exitTime += numOfIntersections;
+        } else {
+            this.exitTime = MainLoop.globalTime + travelTime + MainLoop.enterInterTimeOffset;
+        }
         //cars move counter-clockwise and car array is flushed before each case so the velocity can be reset
         this.angularVelocity = -((2 * Math.PI) / ((double) numOfIntersections));
+        //adjustments to myCar -> clockwise angular velocity
+        if (mycar == true) angularVelocity = -angularVelocity;
         carThread = new Thread(this);
     }
 
@@ -83,10 +89,6 @@ public class Car implements Runnable {
         positionX = rotCenterX + radius * Math.cos(currAngle);
         positionY = rotCenterY + radius * Math.sin(currAngle);
 
-        //positionX = rotCenterX + radius * Math.cos((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
-        //positionY = rotCenterY + radius * Math.sin((Math.abs(time + MainLoop.enterInterTimeOffset)) * angularVelocity - offset);
-        //Thread needs to yield to handle() for proper rendering.
-        //System.out.println("Updating position x " + positionX + " y " + positionY);
         Thread.yield();
     }
 
@@ -103,7 +105,7 @@ public class Car implements Runnable {
         double radReductionRate = (startStopRadius - radius) / timeToLane;
         double currRadius = startStopRadius;
 
-        //after starting the while loop we only care about delata t
+        //after starting the while loop we only care about delta t
         //loop calculates elapse time and compares it to time it would take the car to get to its lane
         while(Math.abs(MainLoop.globalTime - startTime) < timeToLane) {
                 currRadius -= (radReductionRate * (MainLoop.globalTime - prevTime));

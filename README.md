@@ -5,7 +5,7 @@ The purpose of this program is to simulate a problem from the [2013 Google Code 
 named Graduation Requirements. The program provides a visual representation of the problem and its solution for small input files.
 
 ##Compilation
-This program was written using IntelliJ IDEA by JetBrains and, as such, the best way to build the project is to import it from 
+This program was written using [IntelliJ IDEA by JetBrains](https://www.jetbrains.com/idea/download/#section=windows) and, as such, the best way to build the project is to import it from 
 github into the IDE and use the integrated build tool. 
 
 ##Use
